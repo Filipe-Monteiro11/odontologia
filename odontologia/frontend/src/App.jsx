@@ -3,6 +3,7 @@ import Home from "./pages/Home.jsx";
 import Booking from "./pages/Booking.jsx";
 import AdminLogin from "./pages/AdminLogin.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
+import AdminAvailability from "./pages/AdminAvailability.jsx";
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
         <Route path="/agendar" element={<Booking />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/disponibilidade"element={<AdminAvailability />}/>
       </Routes>
     </BrowserRouter>
   );

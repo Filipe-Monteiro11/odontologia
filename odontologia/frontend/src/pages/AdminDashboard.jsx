@@ -11,7 +11,6 @@ import "../styles/admin.css";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
-
   const [admin, setAdmin] = useState(null);
   const [error, setError] = useState("");
 
@@ -23,15 +22,29 @@ export default function AdminDashboard() {
       return;
     }
 
+    let active = true;
+
     api("/api/admin/me", {
       headers: { Authorization: `Bearer ${token}` },
     })
-      .then((data) => setAdmin(data.admin))
+      .then((data) => {
+        if (active) setAdmin(data.admin);
+      })
       .catch((err) => {
+        if (!active) return;
+
+        if (err.message === "Failed to fetch") {
+          setError("Não foi possível conectar ao servidor.");
+          return;
+        }
+
         sessionStorage.removeItem("adminToken");
-        setError(err.message);
         navigate("/admin/login", { replace: true });
       });
+
+    return () => {
+      active = false;
+    };
   }, [navigate]);
 
   function logout() {
@@ -41,9 +54,9 @@ export default function AdminDashboard() {
 
   if (!admin) {
     return (
-      <div className="admin-loading" role="status">
+      <main className="admin-loading" role="status">
         {error || "Verificando acesso..."}
-      </div>
+      </main>
     );
   }
 
@@ -84,20 +97,23 @@ export default function AdminDashboard() {
             <span>Em desenvolvimento</span>
           </article>
 
-          <article className="admin-feature">
+          <Link
+            to="/admin/disponibilidade"
+            className="admin-feature admin-feature-link"
+          >
             <Clock3 size={25} />
             <h2>Disponibilidade</h2>
             <p>
               Configure dias de atendimento, horários e bloqueios.
             </p>
-            <span>Próxima etapa</span>
-          </article>
+            <span>Acessar disponibilidade →</span>
+          </Link>
 
           <article className="admin-feature">
             <Settings size={25} />
             <h2>Configurações</h2>
             <p>
-              Gerencie serviços e informações da conta.
+              Gerencie os serviços e as informações da conta.
             </p>
             <span>Em desenvolvimento</span>
           </article>

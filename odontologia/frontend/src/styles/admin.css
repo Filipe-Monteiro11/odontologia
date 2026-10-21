@@ -1,12 +1,11 @@
 :root {
   --admin-bg: #f7f7f6;
-  --admin-white: #ffffff;
+  --admin-white: #fff;
   --admin-text: #292929;
   --admin-muted: #737373;
   --admin-border: #e7e5e2;
-  --admin-nude: #e9e1d9;
   --admin-accent: #927b67;
-  --admin-dark: #333333;
+  --admin-dark: #333;
 }
 
 .admin-login-page,
@@ -43,7 +42,6 @@
   color: #565656;
   font-size: 13px;
   font-weight: 600;
-  transition: color 0.2s;
 }
 
 .admin-return:hover,
@@ -56,7 +54,6 @@
 }
 
 .admin-eyebrow {
-  display: inline-block;
   color: var(--admin-accent);
   font-size: 11px;
   font-weight: 700;
@@ -95,11 +92,11 @@
   min-height: 48px;
   padding: 13px 14px;
   border: 1px solid #dedbd7;
-  background: #fff;
+  border-radius: 5px;
+  background: var(--admin-white);
   color: var(--admin-text);
   font: inherit;
   font-size: 14px;
-  border-radius: 5px;
 }
 
 .admin-login-form > input {
@@ -125,7 +122,7 @@
   justify-content: center;
   border: 0;
   background: transparent;
-  color: #777;
+  color: var(--admin-muted);
   cursor: pointer;
 }
 
@@ -139,12 +136,11 @@
   border: 0;
   border-radius: 5px;
   background: var(--admin-dark);
-  color: #fff;
+  color: var(--admin-white);
   font: inherit;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
 .admin-submit:hover:not(:disabled) {
@@ -172,7 +168,7 @@
   font-size: 12px;
 }
 
-/* Cabeçalho do painel */
+/* Dashboard */
 
 .admin-dashboard-header {
   background: var(--admin-white);
@@ -195,7 +191,6 @@
 
 .admin-brand strong {
   font-size: 18px;
-  font-weight: 700;
   letter-spacing: 1px;
 }
 
@@ -209,26 +204,22 @@
 .admin-logout {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 10px;
   padding: 12px 18px;
   border: 1px solid var(--admin-border);
   border-radius: 5px;
-  background: #fff;
+  background: var(--admin-white);
   color: var(--admin-text);
   font: inherit;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
 }
 
 .admin-logout:hover {
   background: var(--admin-bg);
   border-color: #d0c8c0;
 }
-
-/* Conteúdo principal */
 
 .admin-dashboard-main {
   padding-top: 72px;
@@ -243,7 +234,6 @@
   margin: 15px 0 13px;
   font-size: clamp(30px, 3.2vw, 40px);
   line-height: 1.2;
-  font-weight: 700;
   letter-spacing: -0.8px;
 }
 
@@ -253,7 +243,7 @@
   gap: 20px;
 }
 
-/* Cards administrativos */
+/* Cards */
 
 .admin-feature {
   display: flex;
@@ -264,36 +254,24 @@
   background: var(--admin-white);
   border: 1px solid var(--admin-border);
   border-radius: 7px;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s,
-    transform 0.2s;
-}
-
-.admin-feature:hover {
-  transform: translateY(-3px);
-  border-color: #d6cabf;
-  box-shadow: 0 12px 30px rgba(30, 25, 20, 0.045);
 }
 
 .admin-feature > svg {
   width: 45px;
   height: 45px;
   padding: 11px;
-  background: #f2ece6;
   border-radius: 9px;
+  background: #f2ece6;
   color: var(--admin-accent);
 }
 
 .admin-feature h2 {
   margin: 24px 0 11px;
   font-size: 19px;
-  font-weight: 700;
   letter-spacing: -0.3px;
 }
 
 .admin-feature p {
-  min-height: 50px;
   margin: 0;
   color: var(--admin-muted);
   font-size: 13px;
@@ -306,6 +284,17 @@
   color: var(--admin-accent);
   font-size: 12px;
   font-weight: 700;
+}
+
+.admin-feature-link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.admin-feature-link:hover {
+  border-color: #b9a795;
+  background: #fdfbf9;
 }
 
 .admin-site-link {
@@ -332,15 +321,13 @@
   outline-offset: 3px;
 }
 
-/* Tablets */
+/* Responsividade */
 
 @media (max-width: 900px) {
   .admin-dashboard-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-
-/* Celulares */
 
 @media (max-width: 650px) {
   .admin-login-card {
@@ -372,17 +359,5 @@
   .admin-feature {
     min-height: 210px;
     padding: 25px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .admin-feature,
-  .admin-submit,
-  .admin-logout {
-    transition: none;
-  }
-
-  .admin-feature:hover {
-    transform: none;
   }
 }
