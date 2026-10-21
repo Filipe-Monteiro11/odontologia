@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -7,69 +7,212 @@ import {
   Mail,
   Phone,
   RefreshCw,
-  XCircle,
+  X,
 } from "lucide-react";
 import { api } from "../services/api.js";
 import "../styles/adminAppointments.css";
 
 const TIME_ZONE = "America/Recife";
 
-function todayInRecife() {
-  const parts = new Intl.DateTimeFormat("en-US", {
+function formatDate(value) {
+  return new Intl.DateTimeFormat("pt-BR", {
     timeZone: TIME_ZONE,
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).formatToParts(new Date());
-
-  const get = (type) =>
-    parts.find((part) => part.type === type).value;
-
-  return `${get("year")}-${get("month")}-${get("day")}`;
+    dateStyle: "long",
+  }).format(new Date(value));
 }
 
-function formatTime(date) {
+function formatShortDate(value) {
+  return new Intl.DateTimeFormat("pt-BR", {
+    timeZone: TIME_ZONE,
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(new Date(value));
+}
+
+function formatTime(value) {
   return new Intl.DateTimeFormat("pt-BR", {
     timeZone: TIME_ZONE,
     hour: "2-digit",
     minute: "2-digit",
-  }).format(new Date(date));
+  }).format(new Date(value));
 }
 
-function formatDate(date) {
-  return new Intl.DateTimeFormat("pt-BR", {
-    timeZone: TIME_ZONE,
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  }).format(new Date(date));
+function statusLabel(status) {
+  if (status === "confirmed") return "Confirmada";
+  if (status === "cancelled") return "Cancelada";
+  return status;
 }
 
-function isUnauthorized(message) {
-  return [
-    "Autenticação necessária.",
-    "Sessão inválida ou expirada.",
-    "Sessão expirada. Faça login novamente.",
-    "Token de autenticação inválido.",
-    "Sessão inválida. Faça login novamente.",
-    "Administrador não encontrado.",
-  ].includes(message);
+function AppointmentDetails({ appointment, onClose, onCancel, canceling }) {
+  const closeRef = useRef(null);
+
+  useEffect(() => {
+    closeRef.current?.focus();
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape" && !canceling) onClose();
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose, canceling]);
+
+  const { patient, service } = appointment;
+
+  return (
+    <div
+      className="appointment-overlay"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget && !canceling) {
+          onClose();
+        }
+      }}
+    >
+      <section
+        className="appointment-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="appointment-title"
+      >
+        <header className="appointment-modal-header">
+          <div>
+            <span className="appointment-label">DETALHES DA CONSULTA</span>
+            <h2 id="appointment-title">Consulta #{appointment.id}</h2>
+          </div>
+
+          <button
+            ref={closeRef}
+            type="button"
+            className="appointment-close"
+            onClick={onClose}
+            disabled={canceling}
+            aria-label="Fechar detalhes"
+          >
+            <X size={19} />
+          </button>
+        </header>
+
+        <div className="appointment-modal-body">
+          <span
+            className={`appointment-status ${
+              appointment.status === "confirmed" ? "confirmed" : "canceled"
+            }`}
+          >
+            {statusLabel(appointment.status)}
+          </span>
+
+          <section className="appointment-detail-section">
+            <h3>Dados do paciente</h3>
+
+            <dl className="appointment-detail-list">
+              <div>
+                <dt>Nome</dt>
+                <dd>{patient.name}</dd>
+              </div>
+              <div>
+                <dt>Telefone</dt>
+                <dd>
+                  <a href={`tel:${patient.phone.replace(/\D/g, "")}`}>
+                    <Phone size={15} />
+                    {patient.phone}
+                  </a>
+                </dd>
+              </div>
+              <div>
+                <dt>E-mail</dt>
+                <dd>
+                  {patient.email ? (
+                    <a href={`mailto:${patient.email}`}>
+                      <Mail size={15} />
+                      {patient.email}
+                    </a>
+                  ) : (
+                    "Não informado"
+                  )}
+                </dd>
+              </div>
+            </dl>
+          </section>
+
+          <section className="appointment-detail-section">
+            <h3>Informações do agendamento</h3>
+
+            <dl className="appointment-detail-list">
+              <div>
+                <dt>Procedimento</dt>
+                <dd>{service.name}</dd>
+              </div>
+              <div>
+                <dt>Data da consulta</dt>
+                <dd>{formatDate(appointment.startAt)}</dd>
+              </div>
+              <div>
+                <dt>Horário</dt>
+                <dd>
+                  {formatTime(appointment.startAt)} às{" "}
+                  {formatTime(appointment.endAt)}
+                </dd>
+              </div>
+              <div>
+                <dt>Agendado em</dt>
+                <dd>
+                  {formatDate(appointment.createdAt)}, às{" "}
+                  {formatTime(appointment.createdAt)}
+                </dd>
+              </div>
+            </dl>
+          </section>
+        </div>
+
+        <footer className="appointment-modal-footer">
+          <button
+            type="button"
+            className="appointment-dismiss"
+            onClick={onClose}
+            disabled={canceling}
+          >
+            Fechar
+          </button>
+
+          {appointment.status === "confirmed" && (
+            <button
+              type="button"
+              className="appointment-cancel"
+              disabled={canceling}
+              onClick={() => onCancel(appointment)}
+            >
+              {canceling ? "Cancelando..." : "Cancelar consulta"}
+            </button>
+          )}
+        </footer>
+      </section>
+    </div>
+  );
 }
 
 export default function AdminAppointments() {
   const navigate = useNavigate();
 
-  const [date, setDate] = useState(todayInRecife);
   const [appointments, setAppointments] = useState([]);
+  const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [cancelingId, setCancelingId] = useState(null);
+  const [canceling, setCanceling] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  const [refreshKey, setRefreshKey] = useState(0);
+
+  const closeDetails = useCallback(() => setSelected(null), []);
 
   const handleError = useCallback(
     (err) => {
-      if (isUnauthorized(err.message)) {
+      if (
+        [
+          "Autenticação necessária.",
+          "Sessão inválida ou expirada.",
+          "Administrador não encontrado.",
+        ].includes(err.message)
+      ) {
         sessionStorage.removeItem("adminToken");
         navigate("/admin/login", { replace: true });
         return;
@@ -94,51 +237,42 @@ export default function AdminAppointments() {
 
     let active = true;
 
-    async function loadAppointments() {
+    async function load() {
       setLoading(true);
       setError("");
-      setMessage("");
 
       try {
-        const result = await api(
-          `/api/admin/appointments?date=${date}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const result = await api("/api/admin/appointments", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-        if (active) {
-          setAppointments(result.appointments);
-        }
+        if (active) setAppointments(result.appointments);
       } catch (err) {
-        if (active) {
-          setAppointments([]);
-          handleError(err);
-        }
+        if (active) handleError(err);
       } finally {
         if (active) setLoading(false);
       }
     }
 
-    loadAppointments();
+    load();
 
     return () => {
       active = false;
     };
-  }, [date, refreshKey, navigate, handleError]);
+  }, [navigate, refreshKey, handleError]);
 
   async function cancelAppointment(appointment) {
-    const confirmed = window.confirm(
-      `Cancelar a consulta de ${appointment.patient.name} em ${formatDate(appointment.startAt)}, às ${formatTime(appointment.startAt)}?\n\nEssa ação não avisa o paciente automaticamente.`
-    );
+    if (
+      !window.confirm(
+        `Cancelar a consulta de ${appointment.patient.name}?\n\nO paciente não será avisado automaticamente.`
+      )
+    ) {
+      return;
+    }
 
-    if (!confirmed) return;
-
+    setCanceling(true);
     setError("");
     setMessage("");
-    setCancelingId(appointment.id);
 
     try {
       const token = sessionStorage.getItem("adminToken");
@@ -148,15 +282,10 @@ export default function AdminAppointments() {
         return;
       }
 
-      await api(
-        `/api/admin/appointments/${appointment.id}/cancel`,
-        {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await api(`/api/admin/appointments/${appointment.id}/cancel`, {
+        method: "PATCH",
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       setAppointments((current) =>
         current.map((item) =>
@@ -166,11 +295,12 @@ export default function AdminAppointments() {
         )
       );
 
+      setSelected(null);
       setMessage("Consulta cancelada com sucesso.");
     } catch (err) {
       handleError(err);
     } finally {
-      setCancelingId(null);
+      setCanceling(false);
     }
   }
 
@@ -183,7 +313,6 @@ export default function AdminAppointments() {
       <header className="appointments-header">
         <div className="container appointments-header-inner">
           <strong>ODONTOLOGIA · ADMINISTRAÇÃO</strong>
-
           <Link to="/admin">
             <ArrowLeft size={17} />
             Voltar ao painel
@@ -196,21 +325,24 @@ export default function AdminAppointments() {
           <span>GERENCIAMENTO DA AGENDA</span>
           <h1>Consultas</h1>
           <p>
-            Visualize os agendamentos, consulte os dados dos
-            pacientes e gerencie cancelamentos.
+            Visualize todos os agendamentos e clique em uma consulta
+            para acessar os dados do paciente.
           </p>
         </div>
 
         <section className="appointments-panel">
           <div className="appointments-toolbar">
-            <label className="appointments-date">
-              Selecionar data
-              <input
-                type="date"
-                value={date}
-                onChange={(event) => setDate(event.target.value)}
-              />
-            </label>
+            <div className="appointments-total">
+              <CalendarDays size={21} />
+              <div>
+                <h2>Todos os agendamentos</h2>
+                <p>
+                  {loading
+                    ? "Carregando..."
+                    : `${appointments.length} registro(s) · ${confirmedCount} confirmado(s)`}
+                </p>
+              </div>
+            </div>
 
             <button
               type="button"
@@ -235,117 +367,64 @@ export default function AdminAppointments() {
             </p>
           )}
 
-          <div className="appointments-results">
-            <div>
-              <h2>Agendamentos do dia</h2>
-              <p>
-                {loading
-                  ? "Buscando consultas..."
-                  : `${confirmedCount} consulta(s) confirmada(s)`}
-              </p>
-            </div>
-
-            <CalendarDays size={22} />
-          </div>
-
           {loading ? (
             <div className="appointments-empty" role="status">
               Carregando consultas...
             </div>
           ) : appointments.length === 0 ? (
             <div className="appointments-empty">
-              Nenhuma consulta encontrada nesta data.
+              Nenhum agendamento cadastrado.
             </div>
           ) : (
             <div className="appointments-list">
-              {appointments.map((appointment) => {
-                const canceled =
-                  appointment.status === "cancelled";
+              {appointments.map((appointment) => (
+                <button
+                  type="button"
+                  key={appointment.id}
+                  className="appointment-entry"
+                  onClick={() => setSelected(appointment)}
+                >
+                  <span className="appointment-entry-time">
+                    <Clock3 size={17} />
+                    <span>
+                      <strong>{formatShortDate(appointment.startAt)}</strong>
+                      <small>{formatTime(appointment.startAt)}</small>
+                    </span>
+                  </span>
 
-                return (
-                  <article
-                    className="appointment-card"
-                    key={appointment.id}
+                  <span className="appointment-entry-info">
+                    <strong>{appointment.patient.name}</strong>
+                    <small>{appointment.service.name}</small>
+                  </span>
+
+                  <span
+                    className={`appointment-status ${
+                      appointment.status === "confirmed"
+                        ? "confirmed"
+                        : "canceled"
+                    }`}
                   >
-                    <div className="appointment-top">
-                      <div className="appointment-time">
-                        <Clock3 size={18} />
-                        <strong>
-                          {formatTime(appointment.startAt)}
-                          {" – "}
-                          {formatTime(appointment.endAt)}
-                        </strong>
-                      </div>
+                    {statusLabel(appointment.status)}
+                  </span>
 
-                      <span
-                        className={
-                          canceled
-                            ? "appointment-status canceled"
-                            : "appointment-status confirmed"
-                        }
-                      >
-                        {canceled
-                          ? "Cancelada"
-                          : appointment.status === "confirmed"
-                            ? "Confirmada"
-                            : appointment.status}
-                      </span>
-                    </div>
-
-                    <div className="appointment-details">
-                      <div>
-                        <span>Paciente</span>
-                        <h3>{appointment.patient.name}</h3>
-                      </div>
-
-                      <div>
-                        <span>Procedimento</span>
-                        <strong>{appointment.service.name}</strong>
-                      </div>
-                    </div>
-
-                    <div className="appointment-contact">
-                      <a
-                        href={`tel:${appointment.patient.phone.replace(/\D/g, "")}`}
-                      >
-                        <Phone size={15} />
-                        {appointment.patient.phone}
-                      </a>
-
-                      {appointment.patient.email && (
-                        <a
-                          href={`mailto:${appointment.patient.email}`}
-                        >
-                          <Mail size={15} />
-                          {appointment.patient.email}
-                        </a>
-                      )}
-                    </div>
-
-                    {!canceled &&
-                      appointment.status === "confirmed" && (
-                        <div className="appointment-actions">
-                          <button
-                            type="button"
-                            disabled={cancelingId === appointment.id}
-                            onClick={() =>
-                              cancelAppointment(appointment)
-                            }
-                          >
-                            <XCircle size={16} />
-                            {cancelingId === appointment.id
-                              ? "Cancelando..."
-                              : "Cancelar consulta"}
-                          </button>
-                        </div>
-                      )}
-                  </article>
-                );
-              })}
+                  <span className="appointment-entry-link">
+                    Ver detalhes →
+                  </span>
+                </button>
+              ))}
             </div>
           )}
         </section>
       </main>
+
+      {selected && (
+        <AppointmentDetails
+          appointment={selected}
+          onClose={closeDetails}
+          onCancel={cancelAppointment}
+          canceling={canceling}
+        />
+      )}
     </div>
   );
 }

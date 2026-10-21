@@ -1,42 +1,9 @@
-import { z } from "zod";
 import prisma from "../config/prisma.js";
-
-const querySchema = z.object({
-  date: z.iso.date().optional(),
-}).strict();
 
 export async function listAdminAppointments(req, res, next) {
   try {
-    const parsed = querySchema.safeParse(req.query);
-
-    if (!parsed.success) {
-      return res.status(400).json({
-        success: false,
-        message: "Data inválida.",
-      });
-    }
-
-    const { date } = parsed.data;
-
-    const where = date
-      ? {
-          startAt: {
-            gte: new Date(`${date}T00:00:00-03:00`),
-            lt: new Date(`${date}T00:00:00-03:00`).getTime() + 86400000
-              ? new Date(
-                  new Date(`${date}T00:00:00-03:00`).getTime() + 86400000
-                )
-              : undefined,
-          },
-        }
-      : {
-          startAt: { gte: new Date() },
-        };
-
     const appointments = await prisma.appointment.findMany({
-      where,
-      orderBy: { startAt: "asc" },
-      take: 100,
+      orderBy: { startAt: "desc" },
       select: {
         id: true,
         startAt: true,
@@ -45,7 +12,6 @@ export async function listAdminAppointments(req, res, next) {
         createdAt: true,
         patient: {
           select: {
-            id: true,
             name: true,
             phone: true,
             email: true,
@@ -53,9 +19,7 @@ export async function listAdminAppointments(req, res, next) {
         },
         service: {
           select: {
-            id: true,
             name: true,
-            durationMinutes: true,
           },
         },
       },
@@ -94,7 +58,7 @@ export async function cancelAdminAppointment(req, res, next) {
     if (result.count === 0) {
       return res.status(409).json({
         success: false,
-        message: "Consulta inexistente ou já cancelada.",
+        message: "Consulta não encontrada ou já cancelada.",
       });
     }
 
