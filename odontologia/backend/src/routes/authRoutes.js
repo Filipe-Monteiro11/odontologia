@@ -2,6 +2,7 @@ import { Router } from "express";
 import rateLimit from "express-rate-limit";
 import { loginAdmin } from "../controllers/authController.js";
 import { requireAdmin } from "../middlewares/requireAdmin.js";
+import { updateAdminAccount } from "../controllers/adminAccountController.js";
 
 const router = Router();
 
@@ -24,5 +25,7 @@ router.get("/me", requireAdmin, (req, res) => {
     admin: req.admin,
   });
 });
+
+router.patch("/me", requireAdmin, updateAdminAccount);
 
 export default router;

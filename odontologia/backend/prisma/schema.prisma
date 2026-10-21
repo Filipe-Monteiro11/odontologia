@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -69,5 +68,6 @@ model Admin {
   name         String
   email        String   @unique
   passwordHash String
+  tokenVersion Int      @default(0)
   createdAt    DateTime @default(now())
 }
