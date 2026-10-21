@@ -7,7 +7,7 @@ const accountSchema = z
     name: z.string().trim().min(2).max(100).optional(),
     email: z.email().trim().toLowerCase().max(254).optional(),
     currentPassword: z.string().min(1),
-    newPassword: z.string().min(12).max(128).optional(),
+    newPassword: z.string().min(6).max(128).optional(),
   })
   .strict()
   .refine(
