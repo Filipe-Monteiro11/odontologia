@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  CalendarDays,
-  Clock3,
-  LogOut,
-  Settings,
-} from "lucide-react";
+import { CalendarDays, Clock3, LogOut, Settings } from "lucide-react";
 import { api } from "../services/api.js";
 import "../styles/admin.css";
 
@@ -27,19 +22,30 @@ export default function AdminDashboard() {
     api("/api/admin/me", {
       headers: { Authorization: `Bearer ${token}` },
     })
-      .then((data) => {
-        if (active) setAdmin(data.admin);
+      .then(({ admin }) => {
+        if (active) setAdmin(admin);
       })
       .catch((err) => {
         if (!active) return;
 
-        if (err.message === "Failed to fetch") {
-          setError("Não foi possível conectar ao servidor.");
+        if (
+          [
+            "Autenticação necessária.",
+            "Sessão inválida ou expirada.",
+            "Sessão expirada. Faça login novamente.",
+            "Administrador não encontrado.",
+          ].includes(err.message)
+        ) {
+          sessionStorage.removeItem("adminToken");
+          navigate("/admin/login", { replace: true });
           return;
         }
 
-        sessionStorage.removeItem("adminToken");
-        navigate("/admin/login", { replace: true });
+        setError(
+          err.message === "Failed to fetch"
+            ? "Não foi possível conectar ao servidor."
+            : err.message
+        );
       });
 
     return () => {
@@ -88,14 +94,15 @@ export default function AdminDashboard() {
         </div>
 
         <div className="admin-dashboard-grid">
-          <article className="admin-feature">
+          <Link
+            to="/admin/consultas"
+            className="admin-feature admin-feature-link"
+          >
             <CalendarDays size={25} />
             <h2>Consultas</h2>
-            <p>
-              Visualize e gerencie os agendamentos dos pacientes.
-            </p>
-            <span>Em desenvolvimento</span>
-          </article>
+            <p>Visualize os agendamentos e gerencie cancelamentos.</p>
+            <span>Acessar consultas →</span>
+          </Link>
 
           <Link
             to="/admin/disponibilidade"
@@ -103,18 +110,14 @@ export default function AdminDashboard() {
           >
             <Clock3 size={25} />
             <h2>Disponibilidade</h2>
-            <p>
-              Configure dias de atendimento, horários e bloqueios.
-            </p>
+            <p>Configure dias de atendimento, horários e bloqueios.</p>
             <span>Acessar disponibilidade →</span>
           </Link>
 
           <article className="admin-feature">
             <Settings size={25} />
             <h2>Configurações</h2>
-            <p>
-              Gerencie os serviços e as informações da conta.
-            </p>
+            <p>Gerencie serviços e informações da conta.</p>
             <span>Em desenvolvimento</span>
           </article>
         </div>
