@@ -28,6 +28,7 @@ app.get("/api/health", (req, res) => {
 
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/services", serviceRoutes);
+app.use("/api/availability", availabilityRoutes);
 
 app.use(errorHandler);
 
