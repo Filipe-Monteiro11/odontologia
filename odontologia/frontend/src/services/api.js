@@ -12,7 +12,7 @@ export async function api(path, options = {}) {
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    throw new Error(data.message || "Não foi possível concluir a operação.");
+    throw new Error(data.message || "Erro ao conectar com o servidor.");
   }
 
   return data;
