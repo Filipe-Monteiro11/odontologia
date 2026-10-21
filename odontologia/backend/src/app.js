@@ -5,6 +5,8 @@ import serviceRoutes from "./routes/serviceRoutes.js";
 import availabilityRoutes from "./routes/availabilityRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import adminServiceRoutes from "./routes/adminServiceRoutes.js";
+import adminAvailabilityRoutes from "./routes/adminAvailabilityRoutes.js";  
+import adminBlockedSlotRoutes from "./routes/adminBlockedSlotRoutes.js";
 
 import appointmentRoutes from "./routes/appointmentRoutes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
@@ -33,6 +35,8 @@ app.use("/api/services", serviceRoutes);
 app.use("/api/availability", availabilityRoutes);
 app.use("/api/admin", authRoutes);
 app.use("/api/admin/services", adminServiceRoutes);
+app.use("/api/admin/availability", adminAvailabilityRoutes);
+app.use("/api/admin/blocked-slots", adminBlockedSlotRoutes);
 
 app.use(errorHandler);
 
