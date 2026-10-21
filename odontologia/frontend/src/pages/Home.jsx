@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { ArrowRight, Clock3, Camera, MapPin, Phone } from "lucide-react";
 
 const whatsapp = "https://wa.me/5581996592005";
@@ -34,15 +35,10 @@ export default function Home() {
             <a href="#contato">Contato</a>
           </nav>
 
-          <a
-            href={whatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="button button-dark header-cta"
-          >
-            Agendar consulta
-            <ArrowRight size={16} />
-          </a>
+        <Link to="/agendar" className="button button-dark">
+           Agendar uma consulta
+           <ArrowRight size={18} />
+        </Link>
         </div>
       </header>
 
