@@ -1,6 +1,16 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight, CalendarDays, Check, Clock3, MapPin } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CalendarDays,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Clock3,
+  MapPin,
+} from "lucide-react";
 import "../styles/booking.css";
 
 const SERVICES = [
@@ -41,8 +51,98 @@ function formatDate(date) {
 function isValidDate(date, today) {
   if (!date || date < today) return false;
 
-  const day = new Date(`${date}T12:00:00Z`).getUTCDay();
-  return day !== 0;
+  return new Date(`${date}T12:00:00Z`).getUTCDay() !== 0;
+}
+
+function Calendar({ date, onChange, today }) {
+  const [monthOffset, setMonthOffset] = useState(0);
+
+  const currentMonth = new Date(`${today.slice(0, 7)}-01T12:00:00Z`);
+  currentMonth.setUTCMonth(currentMonth.getUTCMonth() + monthOffset);
+
+  const year = currentMonth.getUTCFullYear();
+  const month = currentMonth.getUTCMonth();
+
+  const monthName = new Intl.DateTimeFormat("pt-BR", {
+    month: "long",
+    timeZone: "UTC",
+  }).format(currentMonth);
+
+  const daysInMonth = new Date(
+    Date.UTC(year, month + 1, 0)
+  ).getUTCDate();
+
+  const firstWeekday = (currentMonth.getUTCDay() + 6) % 7;
+
+  return (
+    <div className="calendar">
+      <div className="calendar-header">
+        <h3>{monthName}</h3>
+
+        <div className="calendar-navigation">
+          <button
+            type="button"
+            aria-label="Mês anterior"
+            disabled={monthOffset === 0}
+            onClick={() => setMonthOffset((value) => value - 1)}
+          >
+            <ChevronLeft size={19} />
+          </button>
+
+          <button
+            type="button"
+            aria-label="Próximo mês"
+            onClick={() => setMonthOffset((value) => value + 1)}
+          >
+            <ChevronRight size={19} />
+          </button>
+        </div>
+      </div>
+
+      <div className="calendar-grid">
+        {["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"].map(
+          (weekday) => (
+            <span className="calendar-weekday" key={weekday}>
+              {weekday}
+            </span>
+          )
+        )}
+
+        {Array.from({ length: firstWeekday }, (_, index) => (
+          <span key={`empty-${index}`} aria-hidden="true" />
+        ))}
+
+        {Array.from({ length: daysInMonth }, (_, index) => {
+          const day = index + 1;
+
+          const value = [
+            year,
+            String(month + 1).padStart(2, "0"),
+            String(day).padStart(2, "0"),
+          ].join("-");
+
+          const sunday =
+            new Date(Date.UTC(year, month, day)).getUTCDay() === 0;
+
+          const disabled = value < today || sunday;
+
+          return (
+            <button
+              key={value}
+              type="button"
+              className={`calendar-day ${date === value ? "selected" : ""}`}
+              disabled={disabled}
+              aria-label={formatDate(value)}
+              aria-pressed={date === value}
+              onClick={() => onChange(value)}
+            >
+              {day}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
 export default function Booking() {
@@ -75,7 +175,7 @@ export default function Booking() {
           <h1>Agende seu atendimento</h1>
           <p>
             Escolha o tratamento e informe a data desejada.
-            A confirmação do horário será feita pelo consultório.
+            A disponibilidade será confirmada pelo consultório.
           </p>
         </div>
 
@@ -117,7 +217,8 @@ export default function Booking() {
                     disabled={!service}
                     onClick={() => setStep(2)}
                   >
-                    Continuar <ArrowRight size={17} />
+                    Continuar
+                    <ArrowRight size={17} />
                   </button>
                 </div>
               </div>
@@ -126,29 +227,23 @@ export default function Booking() {
                 <h2>Escolha uma data</h2>
                 <p>Selecione o dia em que gostaria de ser atendido.</p>
 
-                <label className="booking-field">
-                  Data desejada
-                  <input
-                    type="date"
-                    min={today}
-                    value={date}
-                    onChange={(event) => setDate(event.target.value)}
-                  />
-                </label>
-
-                {date && !validDate && (
-                  <p className="booking-error">
-                    Selecione uma data válida, exceto domingo.
-                  </p>
-                )}
+                <Calendar
+                  date={date}
+                  onChange={setDate}
+                  today={today}
+                />
 
                 {validDate && (
                   <div className="booking-notice">
-                    <strong>Data selecionada: {formatDate(date)}</strong>
+                    <strong>
+                      Data selecionada: {formatDate(date)}
+                    </strong>
+
                     <p>
-                      A disponibilidade de horários será confirmada
-                      diretamente pelo consultório.
+                      A agenda online ainda está sendo configurada.
+                      Consulte a disponibilidade pelo WhatsApp.
                     </p>
+
                     <a
                       href={WHATSAPP}
                       target="_blank"
@@ -213,7 +308,7 @@ export default function Booking() {
             </div>
 
             <p className="summary-note">
-              Esta solicitação ainda não é uma reserva confirmada.
+              Nenhuma consulta foi reservada até o momento.
             </p>
           </aside>
         </div>

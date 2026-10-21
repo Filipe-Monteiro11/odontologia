@@ -1,3 +1,4 @@
+
 .booking {
   min-height: 100vh;
   background: #f6f5f3;
@@ -172,7 +173,7 @@
 
 .booking-button {
   background: #353535;
-  color: white;
+  color: #fff;
 }
 
 .booking-button:disabled {
@@ -183,31 +184,8 @@
 }
 
 .booking-back-button {
-  background: white;
-  color: #353535;
-}
-
-.booking-field {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-width: 330px;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.booking-field input {
-  min-height: 48px;
-  padding: 12px;
-  border: 1px solid #d9d6d1;
   background: #fff;
-  font: inherit;
-  font-weight: 400;
-}
-
-.booking-error {
-  color: #a34d3a;
-  font-size: 13px;
+  color: #353535;
 }
 
 .booking-notice {
@@ -235,6 +213,95 @@
   font-weight: 700;
   text-decoration: underline;
 }
+
+/* Calendário */
+
+.calendar {
+  max-width: 410px;
+  padding: 22px;
+  background: #fff;
+  border: 1px solid #e5e3e0;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.calendar-header h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.calendar-navigation {
+  display: flex;
+  gap: 8px;
+}
+
+.calendar-navigation button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #e5e3e0;
+  background: #fff;
+  color: #353535;
+  cursor: pointer;
+}
+
+.calendar-navigation button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.calendar-weekday {
+  padding: 10px 0;
+  color: #777;
+  font-size: 11px;
+  text-align: center;
+}
+
+.calendar-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: #353535;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.calendar-day:hover:not(:disabled) {
+  background: #eee8e2;
+}
+
+.calendar-day.selected {
+  background: #8e7865;
+  color: #fff;
+}
+
+.calendar-day:disabled {
+  color: #c6c6c6;
+  cursor: not-allowed;
+}
+
+/* Resumo */
 
 .booking-summary {
   padding: 27px;
@@ -303,11 +370,12 @@
 }
 
 .booking a:focus-visible,
-.booking button:focus-visible,
-.booking input:focus-visible {
+.booking button:focus-visible {
   outline: 2px solid #927a65;
   outline-offset: 3px;
 }
+
+/* Responsividade */
 
 @media (max-width: 800px) {
   .booking-layout {
@@ -343,5 +411,13 @@
 
   .booking-summary {
     padding: 23px;
+  }
+
+  .calendar {
+    padding: 14px;
+  }
+
+  .calendar-grid {
+    gap: 3px;
   }
 }
