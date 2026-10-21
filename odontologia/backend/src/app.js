@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import serviceRoutes from "./routes/serviceRoutes.js";
 import availabilityRoutes from "./routes/availabilityRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 import appointmentRoutes from "./routes/appointmentRoutes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
@@ -29,6 +30,7 @@ app.get("/api/health", (req, res) => {
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/availability", availabilityRoutes);
+app.use("/api/admin", authRoutes);
 
 app.use(errorHandler);
 
