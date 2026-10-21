@@ -1,10 +1,4 @@
-import {
-  ArrowRight,
-  Clock3,
-  Instagram,
-  MapPin,
-  Phone,
-} from "lucide-react";
+import { ArrowRight, Clock3, Camera, MapPin, Phone } from "lucide-react";
 
 const whatsapp = "https://wa.me/5581996592005";
 const instagram = "https://instagram.com/dentista.aliciakorinfsky";
@@ -197,7 +191,7 @@ export default function Home() {
               </div>
 
               <div className="contact-item">
-                <Instagram size={23} />
+                <Camera size={23} />
                 <h3>Instagram</h3>
                 <p>@dentista.aliciakorinfsky</p>
                 <a href={instagram} target="_blank" rel="noopener noreferrer">
