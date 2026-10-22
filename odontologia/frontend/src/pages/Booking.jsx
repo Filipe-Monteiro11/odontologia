@@ -7,10 +7,12 @@ const PROCEDURES = [
   {
     name: "Extrações",
     description: "Remoção de dentes quando indicada após avaliação clínica.",
+    image: "/images/extracoes.png",
   },
   {
     name: "Restaurações",
     description: "Recuperação da estrutura e da função dos dentes.",
+    image: "/images/restauracoes.png",
   },
   {
     name: "Aparelhos metálicos e estéticos",
@@ -24,6 +26,7 @@ const PROCEDURES = [
   {
     name: "Tratamento de canal",
     description: "Tratamento da parte interna do dente, conforme avaliação clínica.",
+    image: "/images/tratamento-de-canal.png",
   },
   {
     name: "Próteses dentárias",
@@ -33,18 +36,22 @@ const PROCEDURES = [
   {
     name: "Clareamento dental",
     description: "Tratamento estético para clarear os dentes com acompanhamento profissional.",
+    image: "/images/clareamento-dental.png",
   },
   {
     name: "Cirurgias odontológicas",
     description: "Procedimentos cirúrgicos realizados conforme indicação clínica.",
+    image: "/images/cirurgias-odontologicas.png",
   },
   {
     name: "Facetas dentárias",
     description: "Tratamentos estéticos para modificar a aparência dos dentes.",
+    image: "/images/facetas-dentarias.png",
   },
   {
     name: "Harmonização facial (Botox)",
     description: "Procedimentos estéticos realizados após avaliação individual.",
+    image: "/images/harmonizacao-facial-botox.png",
   },
   {
     name: "Limpeza dental",
