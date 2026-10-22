@@ -233,16 +233,12 @@ export default function Booking() {
     <div className="procedure-page">
       <header className="procedure-header">
         <div className="container procedure-header-inner">
-          <Link
-            to="/"
-            className="procedure-brand"
-            aria-label="Voltar à página inicial"
-          >
+          <div className="procedure-brand">
             <img
               src="/images/logo-odonto.png"
               alt="Alícia Korinfsky"
             />
-          </Link>
+          </div>
 
           <Link to="/" className="procedure-back">
             <ArrowLeft size={17} />

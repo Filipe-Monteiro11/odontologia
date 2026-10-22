@@ -38,9 +38,9 @@ export default function Home() {
     <div className="home-page">
       <header className="home-header">
         <div className="container home-header-inner">
-          <a href="#inicio" className="home-brand" aria-label="Voltar ao início">
+          <div className="home-brand">
             <img src="/images/logo-odonto.png" alt="Dra. Alícia Korinfsky" />
-          </a>
+          </div>
 
           <nav className="home-nav" aria-label="Menu principal">
             <a href="#sobre">Sobre a dentista</a>
@@ -59,7 +59,9 @@ export default function Home() {
         <section id="inicio" className="home-hero">
           <div className="container home-hero-grid">
             <div className="home-hero-text">
-              <span className="home-eyebrow">ODONTOLOGIA EM CAMARAGIBE</span>
+              <span className="home-eyebrow">
+                ODONTOLOGIA EM CAMARAGIBE
+              </span>
 
               <h1>Atenção e cuidado para o seu sorriso.</h1>
 
@@ -160,7 +162,9 @@ export default function Home() {
               </div>
 
               <p>
-                Alguns registros fotográficos compartilhados tiradas no consultório, mostrando resultados de tratamentos realizados com atenção e cuidado.
+                Alguns registros fotográficos compartilhados tiradas no
+                consultório, mostrando resultados de tratamentos realizados
+                com atenção e cuidado.
               </p>
             </div>
 
@@ -229,7 +233,11 @@ export default function Home() {
                 <Phone size={23} />
                 <h3>WhatsApp</h3>
                 <p>(81) 99659-2005</p>
-                <a href={WHATSAPP} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={WHATSAPP}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Enviar mensagem
                   <ArrowRight size={16} />
                 </a>
@@ -239,7 +247,11 @@ export default function Home() {
                 <Camera size={23} />
                 <h3>Instagram</h3>
                 <p>@dentista.aliciakorinfsky</p>
-                <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={INSTAGRAM}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Acessar perfil
                   <ArrowRight size={16} />
                 </a>
@@ -253,7 +265,11 @@ export default function Home() {
                   <br />
                   Centro, Camaragibe - PE
                 </p>
-                <a href={MAPS} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={MAPS}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Ver localização
                   <ArrowRight size={16} />
                 </a>
