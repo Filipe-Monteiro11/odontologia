@@ -1,11 +1,20 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Clock3, Camera, MapPin, Phone } from "lucide-react";
+import {
+  ArrowRight,
+  Camera,
+  Clock3,
+  MapPin,
+  MessageCircle,
+  Phone,
+} from "lucide-react";
+import "../styles/home.css";
 
-const whatsapp = "https://wa.me/5581996592005";
-const instagram = "https://instagram.com/dentista.aliciakorinfsky";
-const maps = "https://www.google.com/maps/search/?api=1&query=Rua+Vila+Nova+622+Loja+29+Centro+Camaragibe+PE";
+const WHATSAPP = "https://wa.me/5581996592005";
+const INSTAGRAM = "https://instagram.com/dentista.aliciakorinfsky";
+const MAPS =
+  "https://www.google.com/maps/search/?api=1&query=Rua+Vila+Nova+622+Loja+29+Centro+Camaragibe+PE";
 
-const services = [
+const SERVICES = [
   "Extrações",
   "Restaurações",
   "Aparelhos metálicos e estéticos",
@@ -16,84 +25,99 @@ const services = [
   "Cirurgias odontológicas",
   "Facetas dentárias",
   "Harmonização facial (Botox)",
+  "Limpeza dental",
 ];
+
+const GALLERY = Array.from({ length: 7 }, (_, index) => ({
+  src: `/images/foto-${index + 1}.png`,
+  alt: `Registro fotográfico odontológico ${index + 1}`,
+}));
 
 export default function Home() {
   return (
-    <>
-      <header className="header">
-        <div className="container header-content">
-          <a href="#inicio" className="logo">
-            ODONTOLOGIA
-            <span>CLÍNICA & ESTÉTICA</span>
+    <div className="home-page">
+      <header className="home-header">
+        <div className="container home-header-inner">
+          <a href="#inicio" className="home-brand" aria-label="Início">
+            <img
+              src="/images/logo-odonto.png"
+              alt="Alícia Korinfsky"
+            />
           </a>
 
-          <nav aria-label="Menu principal">
-            <a href="#inicio">Início</a>
+          <nav className="home-nav" aria-label="Menu principal">
             <a href="#sobre">Sobre</a>
-            <a href="#servicos">Tratamentos</a>
+            <a href="#tratamentos">Tratamentos</a>
+            <a href="#galeria">Galeria</a>
             <a href="#contato">Contato</a>
           </nav>
 
-        <Link to="/agendar" className="button button-dark">
-           Agendar uma consulta
-           <ArrowRight size={18} />
-        </Link>
+          <Link to="/agendar" className="home-button home-button-dark">
+            Conhecer tratamentos
+            <ArrowRight size={17} />
+          </Link>
         </div>
       </header>
 
       <main>
-        <section className="hero" id="inicio">
-          <div className="container hero-content">
-            <div className="hero-text">
-              <span className="eyebrow">
-                CONSULTÓRIO ODONTOLÓGICO EM CAMARAGIBE
+        <section className="home-hero" id="inicio">
+          <div className="container home-hero-grid">
+            <div className="home-hero-text">
+              <span className="home-eyebrow">
+                ODONTOLOGIA EM CAMARAGIBE
               </span>
 
               <h1>
-                Cuidado e atenção
+                Atenção e cuidado
                 <br />
                 para o seu sorriso.
               </h1>
 
               <p>
-                Atendimento odontológico para adultos e crianças,
-                com tratamentos personalizados para cuidar da sua
-                saúde bucal e da estética do seu sorriso.
+                Conheça os tratamentos oferecidos pela Dra. Alícia
+                Korinfsky, com atendimento individualizado e atenção
+                às suas necessidades.
               </p>
 
-              <div className="hero-actions">
+              <div className="home-actions">
+                <Link
+                  to="/agendar"
+                  className="home-button home-button-dark"
+                >
+                  Ver procedimentos
+                  <ArrowRight size={18} />
+                </Link>
+
                 <a
-                  href={whatsapp}
+                  href={WHATSAPP}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="button button-dark"
+                  className="home-button home-button-outline"
                 >
-                  Agendar uma consulta
-                  <ArrowRight size={18} />
-                </a>
-
-                <a href="#servicos" className="button button-outline">
-                  Conhecer tratamentos
+                  <MessageCircle size={18} />
+                  Falar pelo WhatsApp
                 </a>
               </div>
 
-              <div className="location">
+              <div className="home-location">
                 <MapPin size={17} />
                 Centro, Camaragibe - PE
               </div>
             </div>
 
-            <aside className="appointment-card">
-              <span className="eyebrow">ATENDIMENTO</span>
-              <h2>Agende sua avaliação</h2>
+            <aside className="home-hero-panel">
+              <span className="home-eyebrow">NOSSO ATENDIMENTO</span>
+
+              <h2>Seu sorriso merece atenção.</h2>
+
               <p>
-                Entre em contato para consultar a disponibilidade
-                e receber informações sobre nossos tratamentos.
+                Conheça os procedimentos disponíveis e converse
+                diretamente com nossa equipe para esclarecer dúvidas
+                e combinar seu atendimento.
               </p>
 
-              <div className="appointment-info">
-                <Clock3 size={20} />
+              <div className="home-hero-info">
+                <Clock3 size={21} />
                 <div>
                   <strong>Horário de funcionamento</strong>
                   <span>Segunda a sexta: 09h às 17h</span>
@@ -101,101 +125,160 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="appointment-info">
-                <Phone size={20} />
+              <div className="home-hero-info">
+                <Phone size={21} />
                 <div>
                   <strong>Telefone / WhatsApp</strong>
                   <span>(81) 99659-2005</span>
                 </div>
               </div>
 
-              <a
-                href={whatsapp}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="card-link"
-              >
-                Falar pelo WhatsApp
+              <Link to="/agendar" className="home-panel-link">
+                Explorar tratamentos
                 <ArrowRight size={17} />
-              </a>
+              </Link>
             </aside>
           </div>
         </section>
 
-        <section className="section about" id="sobre">
-          <div className="container about-content">
+        <section className="home-section home-about" id="sobre">
+          <div className="container home-about-grid">
             <div>
-              <span className="eyebrow">SOBRE O ATENDIMENTO</span>
+              <span className="home-eyebrow">SOBRE O ATENDIMENTO</span>
+
               <h2>
-                Um atendimento dedicado
+                Um cuidado pensado
                 <br />
-                à sua saúde bucal.
+                para cada paciente.
               </h2>
             </div>
 
             <p>
-              Cada paciente possui necessidades diferentes.
-              Por isso, valorizamos uma avaliação individualizada,
-              com atenção à prevenção, ao tratamento e ao cuidado
-              contínuo da saúde bucal.
+              Cada pessoa possui necessidades diferentes. Por isso,
+              a avaliação individual é essencial para orientar os
+              cuidados com a saúde bucal e identificar os tratamentos
+              mais adequados para cada situação.
             </p>
           </div>
         </section>
 
-        <section className="section services" id="servicos">
+        <section
+          className="home-section home-services"
+          id="tratamentos"
+        >
           <div className="container">
-            <div className="section-heading">
-              <span className="eyebrow">NOSSOS SERVIÇOS</span>
-              <h2>Tratamentos odontológicos</h2>
+            <div className="home-section-heading">
+              <span className="home-eyebrow">NOSSOS TRATAMENTOS</span>
+              <h2>Cuidados para a sua saúde bucal</h2>
               <p>
-                Conheça os procedimentos disponíveis em nosso consultório.
+                Conheça os procedimentos e saiba mais sobre
+                os atendimentos disponíveis no consultório.
               </p>
             </div>
 
-            <div className="services-grid">
-              {services.map((service) => (
-                <div className="service-item" key={service}>
-                  <h3>{service}</h3>
-                  <ArrowRight size={18} />
+            <div className="home-services-grid">
+              {SERVICES.map((service) => (
+                <Link
+                  key={service}
+                  to="/agendar"
+                  className="home-service"
+                >
+                  <span>{service}</span>
+                  <ArrowRight size={17} />
+                </Link>
+              ))}
+            </div>
+
+            <div className="home-section-action">
+              <Link
+                to="/agendar"
+                className="home-button home-button-dark"
+              >
+                Ver detalhes dos procedimentos
+                <ArrowRight size={17} />
+              </Link>
+            </div>
+
+            <p className="home-disclaimer">
+              A indicação dos procedimentos depende de avaliação
+              odontológica individualizada.
+            </p>
+          </div>
+        </section>
+
+        <section className="home-section home-gallery" id="galeria">
+          <div className="container">
+            <div className="home-section-heading">
+              <span className="home-eyebrow">GALERIA</span>
+              <h2>Conheça nosso trabalho</h2>
+              <p>
+                Registros fotográficos dos cuidados e tratamentos
+                odontológicos realizados.
+              </p>
+            </div>
+
+            <div className="home-gallery-grid">
+              {GALLERY.map((photo) => (
+                <div className="home-gallery-item" key={photo.src}>
+                  <img
+                    src={photo.src}
+                    alt={photo.alt}
+                    loading="lazy"
+                  />
                 </div>
               ))}
             </div>
 
-            <p className="disclaimer">
-              Todos os procedimentos estão sujeitos à avaliação
-              odontológica individual.
+            <p className="home-gallery-note">
+              Os resultados dos tratamentos variam conforme as
+              características e necessidades de cada paciente.
             </p>
           </div>
         </section>
 
-        <section className="section contact" id="contato">
+        <section className="home-section home-contact" id="contato">
           <div className="container">
-            <div className="section-heading">
-              <span className="eyebrow">CONTATO</span>
+            <div className="home-section-heading">
+              <span className="home-eyebrow">CONTATO</span>
               <h2>Estamos à sua disposição</h2>
-              <p>Entre em contato ou visite nosso consultório.</p>
+              <p>
+                Entre em contato com nossa equipe ou conheça
+                a localização do consultório.
+              </p>
             </div>
 
-            <div className="contact-grid">
-              <div className="contact-item">
+            <div className="home-contact-grid">
+              <div className="home-contact-card">
                 <Phone size={23} />
-                <h3>Telefone / WhatsApp</h3>
+                <h3>WhatsApp</h3>
                 <p>(81) 99659-2005</p>
-                <a href={whatsapp} target="_blank" rel="noopener noreferrer">
-                  Enviar mensagem <ArrowRight size={16} />
+
+                <a
+                  href={WHATSAPP}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Enviar mensagem
+                  <ArrowRight size={16} />
                 </a>
               </div>
 
-              <div className="contact-item">
+              <div className="home-contact-card">
                 <Camera size={23} />
                 <h3>Instagram</h3>
                 <p>@dentista.aliciakorinfsky</p>
-                <a href={instagram} target="_blank" rel="noopener noreferrer">
-                  Acessar perfil <ArrowRight size={16} />
+
+                <a
+                  href={INSTAGRAM}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Acessar perfil
+                  <ArrowRight size={16} />
                 </a>
               </div>
 
-              <div className="contact-item">
+              <div className="home-contact-card">
                 <MapPin size={23} />
                 <h3>Endereço</h3>
                 <p>
@@ -203,15 +286,21 @@ export default function Home() {
                   <br />
                   Centro, Camaragibe - PE
                 </p>
-                <a href={maps} target="_blank" rel="noopener noreferrer">
-                  Ver localização <ArrowRight size={16} />
+
+                <a
+                  href={MAPS}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Ver localização
+                  <ArrowRight size={16} />
                 </a>
               </div>
             </div>
 
-            <div className="business-hours">
+            <div className="home-hours">
               <div>
-                <Clock3 size={22} />
+                <Clock3 size={21} />
                 <strong>Horário de funcionamento</strong>
               </div>
 
@@ -227,14 +316,14 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="footer">
-        <div className="container footer-content">
-          <strong>ODONTOLOGIA · CLÍNICA & ESTÉTICA</strong>
+      <footer className="home-footer">
+        <div className="container home-footer-inner">
+          <strong>Dra. Alícia Korinfsky</strong>
           <span>
-            © {new Date().getFullYear()} — Camaragibe, PE
+            © {new Date().getFullYear()} · Camaragibe, PE
           </span>
         </div>
       </footer>
-    </>
+    </div>
   );
 }
