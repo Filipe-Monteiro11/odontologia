@@ -11,6 +11,13 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.home-page button,
+.home-page input,
+.home-page select,
+.home-page textarea {
+  font: inherit;
+}
+
 .home-page a {
   text-decoration: none;
 }
@@ -35,7 +42,7 @@
   justify-content: space-between;
   gap: 32px;
   width: 100%;
-  min-height: 115px;
+  min-height: 88px;
   padding-inline: 24px;
 }
 
@@ -43,8 +50,7 @@
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  width: 260px;
-  background: transparent;
+  width: 340px;
 }
 
 .home-brand img {
@@ -334,7 +340,6 @@
   max-width: 620px;
   margin: 25px 0 27px;
   color: #302c29;
-  font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(42px, 4.2vw, 62px);
   font-weight: 400;
   line-height: 1.1;
@@ -628,7 +633,7 @@
   .home-header-inner {
     flex-wrap: wrap;
     gap: 16px;
-    padding-block: 15px;
+    padding-block: 8px;
   }
 
   .home-nav {
@@ -703,13 +708,13 @@
 
 @media (max-width: 620px) {
   .home-header-inner {
-    min-height: 82px;
-    gap: 16px;
-    padding-inline: 16px;
+    gap: 12px;
+    min-height: 70px;
+    padding: 10px 16px;
   }
 
   .home-brand {
-    width: 210px;
+    width: 240px;
   }
 
   .home-brand img {

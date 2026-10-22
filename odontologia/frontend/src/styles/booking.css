@@ -2,11 +2,30 @@
   --accent: #927b67;
   --border: #e5e1dc;
   --muted: #6e6b68;
+  --text: #303030;
+  --surface: #f7f6f4;
 
   min-height: 100vh;
-  background: #f7f6f4;
-  color: #303030;
+  background: var(--surface);
+  color: var(--text);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.procedure-page button,
+.procedure-page input,
+.procedure-page select,
+.procedure-page textarea {
+  font: inherit;
+}
+
+.procedure-page a {
+  text-decoration: none;
+}
+
+.procedure-page a:focus-visible,
+.procedure-page button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 /* Cabeçalho */
@@ -21,13 +40,17 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
+  width: 100%;
   min-height: 88px;
+  padding-inline: 24px;
 }
 
 .procedure-brand {
-  display: block;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
   width: 198px;
-  background: #000;
+  background: transparent;
 }
 
 .procedure-brand img {
@@ -40,10 +63,17 @@
 .procedure-back {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+  margin-left: auto;
   color: #444;
   font-size: 13px;
   font-weight: 600;
+  white-space: nowrap;
+}
+
+.procedure-back:hover {
+  color: var(--accent);
 }
 
 /* Apresentação */
@@ -81,7 +111,7 @@
   line-height: 1.75;
 }
 
-/* Cartões */
+/* Cartões de procedimentos */
 
 .procedure-grid {
   display: grid;
@@ -99,7 +129,6 @@
   border-radius: 6px;
   background: #fff;
   color: inherit;
-  font: inherit;
   text-align: left;
   cursor: pointer;
 }
@@ -159,7 +188,7 @@
   font-weight: 700;
 }
 
-/* Tratamento escolhido */
+/* Tratamento selecionado */
 
 .procedure-footer {
   display: flex;
@@ -186,10 +215,11 @@
   min-height: 48px;
   padding: 12px 19px;
   border-radius: 4px;
-  background: #303030;
+  background: var(--text);
   color: #fff;
   font-size: 13px;
   font-weight: 700;
+  text-align: center;
   white-space: nowrap;
 }
 
@@ -250,24 +280,24 @@
   border: 1px solid var(--border);
   border-radius: 4px;
   background: #fff;
-  color: #303030;
+  color: var(--text);
   cursor: pointer;
 }
 
 .procedure-modal-close:hover {
-  background: #f7f6f4;
+  background: var(--surface);
 }
 
 .procedure-modal-image {
   padding: 22px;
-  background: #f7f6f4;
+  background: var(--surface);
 }
 
 .procedure-modal-image img {
   display: block;
   width: 100%;
   max-height: 420px;
-  margin: 0 auto;
+  margin-inline: auto;
   object-fit: contain;
   border-radius: 4px;
 }
@@ -286,6 +316,7 @@
   color: #646464;
   font-size: 14px;
   line-height: 1.85;
+  white-space: pre-line;
 }
 
 .procedure-modal-content small {
@@ -316,27 +347,20 @@
   border: 1px solid #dedbd7;
   border-radius: 4px;
   background: #fff;
-  color: #303030;
-  font: inherit;
+  color: var(--text);
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
 }
 
 .procedure-modal-select {
-  border-color: #303030;
-  background: #303030;
+  border-color: var(--text);
+  background: var(--text);
   color: #fff;
 }
 
 .procedure-modal-select:hover {
   background: #51473f;
-}
-
-.procedure-page a:focus-visible,
-.procedure-page button:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
 }
 
 /* Responsividade */
@@ -350,6 +374,8 @@
 @media (max-width: 620px) {
   .procedure-header-inner {
     min-height: 70px;
+    gap: 12px;
+    padding-inline: 16px;
   }
 
   .procedure-brand {
@@ -358,6 +384,10 @@
 
   .procedure-brand img {
     height: 52px;
+  }
+
+  .procedure-back {
+    font-size: 12px;
   }
 
   .procedure-main {

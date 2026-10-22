@@ -46,12 +46,17 @@ const PROCEDURES = [
       "O tratamento de canal é indicado quando a polpa, tecido localizado no interior do dente, apresenta inflamação ou infecção. O procedimento trata e preenche os canais internos, buscando preservar o dente quando possível.",
   },
   {
-    name: "Próteses dentárias",
-    image: "/images/proteses.png",
-    description: "Alternativas para substituir dentes ausentes e recuperar a mastigação.",
-    details:
-      "As próteses substituem dentes ausentes e ajudam a recuperar funções como mastigação e fala. Existem opções parciais, totais, fixas e removíveis. A escolha considera a saúde bucal e as necessidades individuais.",
-  },
+  name: "Próteses dentárias",
+  image: "/images/proteses.png",
+  description:
+    "Próteses parciais removíveis, flexíveis e totais para substituir dentes ausentes e recuperar a mastigação.",
+  details:
+      "Recupere seu sorriso, a mastigação e a confiança com nossas opções de próteses dentárias.\n\n" +
+      "• PPR: substitui alguns dentes ausentes.\n" +
+      "• FLEX: prótese removível, flexível e discreta.\n" +
+      "• PT: substitui todos os dentes de uma arcada.\n\n" +
+      "Nossa equipe ajuda você a escolher a opção ideal após uma avaliação.",
+},
   {
     name: "Clareamento dental",
     image: "/images/clareamento-dental.png",
@@ -232,7 +237,7 @@ export default function Booking() {
   return (
     <div className="procedure-page">
       <header className="procedure-header">
-        <div className="container procedure-header-inner">
+        <div className="procedure-header-inner">
           <div className="procedure-brand">
             <img
               src="/images/logo-odonto.png"
