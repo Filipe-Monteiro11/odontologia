@@ -1,317 +1,182 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  ArrowLeft,
-  ArrowRight,
-  CalendarDays,
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  Clock3,
-  MapPin,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, MessageCircle } from "lucide-react";
 import "../styles/booking.css";
 
-const SERVICES = [
-  "Extrações",
-  "Restaurações",
-  "Aparelhos metálicos e estéticos",
-  "Atendimento de crianças",
-  "Tratamento de canal",
-  "Próteses dentárias",
-  "Clareamento dental",
-  "Cirurgias odontológicas",
-  "Facetas dentárias",
-  "Harmonização facial (Botox)",
+const PROCEDURES = [
+  {
+    name: "Extrações",
+    description: "Remoção de dentes quando indicada após avaliação clínica.",
+  },
+  {
+    name: "Restaurações",
+    description: "Recuperação da estrutura e da função dos dentes.",
+  },
+  {
+    name: "Aparelhos metálicos e estéticos",
+    description: "Tratamentos ortodônticos para correção do alinhamento dental e da mordida.",
+    image: "/images/aparelho-ortodontico.png",
+  },
+  {
+    name: "Atendimento de crianças",
+    description: "Cuidados odontológicos voltados à saúde bucal infantil.",
+  },
+  {
+    name: "Tratamento de canal",
+    description: "Tratamento da parte interna do dente, conforme avaliação clínica.",
+  },
+  {
+    name: "Próteses dentárias",
+    description: "Soluções para substituir dentes ausentes e recuperar a mastigação.",
+    image: "/images/proteses.png",
+  },
+  {
+    name: "Clareamento dental",
+    description: "Tratamento estético para clarear os dentes com acompanhamento profissional.",
+  },
+  {
+    name: "Cirurgias odontológicas",
+    description: "Procedimentos cirúrgicos realizados conforme indicação clínica.",
+  },
+  {
+    name: "Facetas dentárias",
+    description: "Tratamentos estéticos para modificar a aparência dos dentes.",
+  },
+  {
+    name: "Harmonização facial (Botox)",
+    description: "Procedimentos estéticos realizados após avaliação individual.",
+  },
+  {
+    name: "Limpeza dental",
+    description: "Remoção profissional de placa e tártaro para manutenção da saúde bucal.",
+    image: "/images/limpeza-dental.png",
+  },
 ];
 
-const WHATSAPP = "https://wa.me/5581996592005";
-
-function todayInRecife() {
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/Recife",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).formatToParts(new Date());
-
-  const get = (type) => parts.find((part) => part.type === type).value;
-
-  return `${get("year")}-${get("month")}-${get("day")}`;
-}
-
-function formatDate(date) {
-  return new Intl.DateTimeFormat("pt-BR", {
-    dateStyle: "long",
-    timeZone: "UTC",
-  }).format(new Date(`${date}T12:00:00Z`));
-}
-
-function isValidDate(date, today) {
-  if (!date || date < today) return false;
-
-  return new Date(`${date}T12:00:00Z`).getUTCDay() !== 0;
-}
-
-function Calendar({ date, onChange, today }) {
-  const [monthOffset, setMonthOffset] = useState(0);
-
-  const currentMonth = new Date(`${today.slice(0, 7)}-01T12:00:00Z`);
-  currentMonth.setUTCMonth(currentMonth.getUTCMonth() + monthOffset);
-
-  const year = currentMonth.getUTCFullYear();
-  const month = currentMonth.getUTCMonth();
-
-  const monthName = new Intl.DateTimeFormat("pt-BR", {
-    month: "long",
-    timeZone: "UTC",
-  }).format(currentMonth);
-
-  const daysInMonth = new Date(
-    Date.UTC(year, month + 1, 0)
-  ).getUTCDate();
-
-  const firstWeekday = (currentMonth.getUTCDay() + 6) % 7;
-
-  return (
-    <div className="calendar">
-      <div className="calendar-header">
-        <h3>{monthName}</h3>
-
-        <div className="calendar-navigation">
-          <button
-            type="button"
-            aria-label="Mês anterior"
-            disabled={monthOffset === 0}
-            onClick={() => setMonthOffset((value) => value - 1)}
-          >
-            <ChevronLeft size={19} />
-          </button>
-
-          <button
-            type="button"
-            aria-label="Próximo mês"
-            onClick={() => setMonthOffset((value) => value + 1)}
-          >
-            <ChevronRight size={19} />
-          </button>
-        </div>
-      </div>
-
-      <div className="calendar-grid">
-        {["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"].map(
-          (weekday) => (
-            <span className="calendar-weekday" key={weekday}>
-              {weekday}
-            </span>
-          )
-        )}
-
-        {Array.from({ length: firstWeekday }, (_, index) => (
-          <span key={`empty-${index}`} aria-hidden="true" />
-        ))}
-
-        {Array.from({ length: daysInMonth }, (_, index) => {
-          const day = index + 1;
-
-          const value = [
-            year,
-            String(month + 1).padStart(2, "0"),
-            String(day).padStart(2, "0"),
-          ].join("-");
-
-          const sunday =
-            new Date(Date.UTC(year, month, day)).getUTCDay() === 0;
-
-          const disabled = value < today || sunday;
-
-          return (
-            <button
-              key={value}
-              type="button"
-              className={`calendar-day ${date === value ? "selected" : ""}`}
-              disabled={disabled}
-              aria-label={formatDate(value)}
-              aria-pressed={date === value}
-              onClick={() => onChange(value)}
-            >
-              {day}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
+const WHATSAPP_NUMBER = "5581996592005";
 
 export default function Booking() {
-  const [service, setService] = useState("");
-  const [date, setDate] = useState("");
-  const [step, setStep] = useState(1);
+  const [selected, setSelected] = useState(null);
 
-  const today = todayInRecife();
-  const validDate = isValidDate(date, today);
+  const whatsappUrl = selected
+    ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+        `Olá! Gostaria de saber mais sobre o procedimento de ${selected.name} e conversar sobre um possível agendamento com a Dra. Alícia Korinfsky.`
+      )}`
+    : null;
 
   return (
-    <div className="booking">
-      <header className="booking-header">
-        <div className="container booking-header-content">
-          <Link to="/" className="booking-logo">
-            ODONTOLOGIA
-            <small>CLÍNICA & ESTÉTICA</small>
+    <div className="procedure-page">
+      <header className="procedure-header">
+        <div className="container procedure-header-inner">
+          <Link
+            to="/"
+            className="procedure-brand"
+            aria-label="Voltar à página inicial"
+          >
+            <img
+              src="/images/logo-alicia.png"
+              alt="Alícia Korinfsky"
+            />
           </Link>
 
-          <Link to="/" className="booking-back">
+          <Link to="/" className="procedure-back">
             <ArrowLeft size={17} />
             Voltar ao site
           </Link>
         </div>
       </header>
 
-      <main className="container booking-main">
-        <div className="booking-intro">
-          <span className="booking-label">AGENDAMENTO</span>
-          <h1>Agende seu atendimento</h1>
+      <main className="container procedure-main">
+        <div className="procedure-intro">
+          <span>TRATAMENTOS ODONTOLÓGICOS</span>
+
+          <h1>Encontre o cuidado que você procura</h1>
+
           <p>
-            Escolha o tratamento e informe a data desejada.
-            A disponibilidade será confirmada pelo consultório.
+            Conheça os procedimentos oferecidos pela Dra. Alícia Korinfsky.
+            Selecione o tratamento de seu interesse e converse com nossa
+            equipe para obter informações e combinar seu atendimento.
           </p>
         </div>
 
-        <div className="booking-layout">
-          <section className="booking-card">
-            <div className="booking-progress">
-              <span className={step === 1 ? "active" : ""}>
-                1. Tratamento
-              </span>
-              <span className={step === 2 ? "active" : ""}>
-                2. Data
-              </span>
-            </div>
+        <div className="procedure-grid">
+          {PROCEDURES.map((procedure) => {
+            const isSelected = selected?.name === procedure.name;
 
-            {step === 1 ? (
-              <div className="booking-content">
-                <h2>Selecione o tratamento</h2>
-                <p>Qual procedimento você procura?</p>
-
-                <div className="booking-services">
-                  {SERVICES.map((item) => (
-                    <button
-                      key={item}
-                      type="button"
-                      className={`booking-service ${service === item ? "selected" : ""}`}
-                      onClick={() => setService(item)}
-                      aria-pressed={service === item}
-                    >
-                      {item}
-                      {service === item && <Check size={18} />}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="booking-actions">
-                  <button
-                    type="button"
-                    className="booking-button"
-                    disabled={!service}
-                    onClick={() => setStep(2)}
-                  >
-                    Continuar
-                    <ArrowRight size={17} />
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="booking-content">
-                <h2>Escolha uma data</h2>
-                <p>Selecione o dia em que gostaria de ser atendido.</p>
-
-                <Calendar
-                  date={date}
-                  onChange={setDate}
-                  today={today}
-                />
-
-                {validDate && (
-                  <div className="booking-notice">
-                    <strong>
-                      Data selecionada: {formatDate(date)}
-                    </strong>
-
-                    <p>
-                      A agenda online ainda está sendo configurada.
-                      Consulte a disponibilidade pelo WhatsApp.
-                    </p>
-
-                    <a
-                      href={WHATSAPP}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Consultar disponibilidade
-                      <ArrowRight size={16} />
-                    </a>
-                  </div>
+            return (
+              <button
+                key={procedure.name}
+                type="button"
+                className={`procedure-card${isSelected ? " is-selected" : ""}`}
+                onClick={() => setSelected(procedure)}
+                aria-pressed={isSelected}
+              >
+                {procedure.image ? (
+                  <img
+                    src={procedure.image}
+                    alt={procedure.name}
+                    loading="lazy"
+                  />
+                ) : (
+                  <span
+                    className="procedure-placeholder"
+                    aria-hidden="true"
+                  />
                 )}
 
-                <div className="booking-actions">
-                  <button
-                    type="button"
-                    className="booking-back-button"
-                    onClick={() => setStep(1)}
-                  >
-                    <ArrowLeft size={17} />
-                    Voltar
-                  </button>
-                </div>
-              </div>
-            )}
-          </section>
+                <span className="procedure-card-body">
+                  <span className="procedure-card-title">
+                    <strong>{procedure.name}</strong>
+                    {isSelected && <Check size={19} />}
+                  </span>
 
-          <aside className="booking-summary">
-            <h3>Resumo do atendimento</h3>
+                  <span className="procedure-description">
+                    {procedure.description}
+                  </span>
 
-            <div className="summary-item">
-              <Check size={18} />
-              <div>
-                <span>Tratamento</span>
-                <strong>{service || "Não selecionado"}</strong>
-              </div>
-            </div>
-
-            <div className="summary-item">
-              <CalendarDays size={18} />
-              <div>
-                <span>Data desejada</span>
-                <strong>
-                  {validDate ? formatDate(date) : "Não selecionada"}
-                </strong>
-              </div>
-            </div>
-
-            <div className="summary-item">
-              <Clock3 size={18} />
-              <div>
-                <span>Horário</span>
-                <strong>A confirmar</strong>
-              </div>
-            </div>
-
-            <div className="summary-address">
-              <MapPin size={18} />
-              <span>
-                Rua Vila Nova, 622, Loja 29
-                <br />
-                Centro, Camaragibe - PE
-              </span>
-            </div>
-
-            <p className="summary-note">
-              Nenhuma consulta foi reservada até o momento.
-            </p>
-          </aside>
+                  <span className="procedure-select">
+                    {isSelected ? "Selecionado" : "Selecionar tratamento"}
+                    <ArrowRight size={15} />
+                  </span>
+                </span>
+              </button>
+            );
+          })}
         </div>
+
+        <section className="procedure-footer">
+          <div>
+            <span className="procedure-footer-label">
+              TRATAMENTO ESCOLHIDO
+            </span>
+
+            <h2>
+              {selected?.name || "Selecione um procedimento acima"}
+            </h2>
+
+            <p>
+              A data e o horário serão combinados diretamente com nossa equipe.
+            </p>
+          </div>
+
+          {whatsappUrl ? (
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="procedure-cta"
+            >
+              <MessageCircle size={19} />
+              Continuar pelo WhatsApp
+              <ArrowRight size={17} />
+            </a>
+          ) : (
+            <span className="procedure-cta is-disabled">
+              <MessageCircle size={19} />
+              Selecione um tratamento
+            </span>
+          )}
+        </section>
       </main>
     </div>
   );
