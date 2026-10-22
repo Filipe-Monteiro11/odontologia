@@ -92,7 +92,7 @@ const PROCEDURES = [
 const WHATSAPP_NUMBER = "5581996592005";
 
 function getWhatsAppUrl(procedure) {
-  const message = `Olá! Gostaria de saber mais sobre ${procedure} e conversar sobre um possível agendamento com a Dra. Alícia Korinfsky.`;
+  const message = `Olá! Gostaria de saber mais sobre ${procedure} e conversar sobre um possível agendamento.`;
 
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
