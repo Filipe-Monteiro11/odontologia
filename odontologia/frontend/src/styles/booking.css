@@ -1,21 +1,27 @@
 .procedure-page {
+  --accent: #927b67;
+  --border: #e5e1dc;
+  --muted: #6e6b68;
+
   min-height: 100vh;
   background: #f7f6f4;
   color: #303030;
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Cabeçalho */
+
 .procedure-header {
   background: #fff;
-  border-bottom: 1px solid #e7e4e0;
+  border-bottom: 1px solid var(--border);
 }
 
 .procedure-header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 88px;
   gap: 24px;
+  min-height: 88px;
 }
 
 .procedure-brand {
@@ -40,6 +46,8 @@
   font-weight: 600;
 }
 
+/* Apresentação */
+
 .procedure-main {
   padding-top: 58px;
   padding-bottom: 85px;
@@ -51,11 +59,12 @@
 }
 
 .procedure-intro > span,
-.procedure-footer-label {
-  color: #967c68;
+.procedure-footer-label,
+.procedure-modal-header span {
+  color: var(--accent);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 1.4px;
+  letter-spacing: 1.2px;
 }
 
 .procedure-intro h1 {
@@ -67,10 +76,12 @@
 .procedure-intro p,
 .procedure-footer p {
   margin: 0;
-  color: #6e6b68;
+  color: var(--muted);
   font-size: 14px;
   line-height: 1.75;
 }
+
+/* Cartões */
 
 .procedure-grid {
   display: grid;
@@ -81,10 +92,10 @@
 .procedure-card {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   min-width: 0;
   padding: 0;
-  border: 1px solid #e5e1dc;
+  overflow: hidden;
+  border: 1px solid var(--border);
   border-radius: 6px;
   background: #fff;
   color: inherit;
@@ -95,7 +106,7 @@
 
 .procedure-card:hover,
 .procedure-card.is-selected {
-  border-color: #9d826d;
+  border-color: var(--accent);
 }
 
 .procedure-card > img,
@@ -107,7 +118,7 @@
 }
 
 .procedure-placeholder {
-  background: linear-gradient(135deg, #efebe6, #ded4cb);
+  background: #e8e1da;
 }
 
 .procedure-card-body {
@@ -129,11 +140,11 @@
 
 .procedure-card-title svg,
 .procedure-select {
-  color: #8f745f;
+  color: var(--accent);
 }
 
 .procedure-description {
-  color: #71706e;
+  color: var(--muted);
   font-size: 13px;
   line-height: 1.65;
 }
@@ -147,6 +158,8 @@
   font-size: 12px;
   font-weight: 700;
 }
+
+/* Tratamento escolhido */
 
 .procedure-footer {
   display: flex;
@@ -180,16 +193,153 @@
   white-space: nowrap;
 }
 
+.procedure-cta:hover {
+  background: #51473f;
+  color: #fff;
+}
+
 .procedure-cta.is-disabled {
   background: #b7b0aa;
   cursor: not-allowed;
 }
 
+/* Janela de detalhes */
+
+.procedure-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(25, 25, 25, 0.55);
+}
+
+.procedure-modal {
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.procedure-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 25px 30px;
+  border-bottom: 1px solid var(--border);
+}
+
+.procedure-modal-header h2 {
+  margin: 10px 0 0;
+  font-size: 23px;
+  line-height: 1.3;
+}
+
+.procedure-modal-close {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #fff;
+  color: #303030;
+  cursor: pointer;
+}
+
+.procedure-modal-close:hover {
+  background: #f7f6f4;
+}
+
+.procedure-modal-image {
+  padding: 22px;
+  background: #f7f6f4;
+}
+
+.procedure-modal-image img {
+  display: block;
+  width: 100%;
+  max-height: 420px;
+  margin: 0 auto;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.procedure-modal-content {
+  padding: 28px 30px;
+}
+
+.procedure-modal-content h3 {
+  margin: 0 0 14px;
+  font-size: 17px;
+}
+
+.procedure-modal-content p {
+  margin: 0;
+  color: #646464;
+  font-size: 14px;
+  line-height: 1.85;
+}
+
+.procedure-modal-content small {
+  display: block;
+  margin-top: 18px;
+  color: #888;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.procedure-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 20px 30px;
+  border-top: 1px solid var(--border);
+}
+
+.procedure-modal-back,
+.procedure-modal-select {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 11px 18px;
+  border: 1px solid #dedbd7;
+  border-radius: 4px;
+  background: #fff;
+  color: #303030;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.procedure-modal-select {
+  border-color: #303030;
+  background: #303030;
+  color: #fff;
+}
+
+.procedure-modal-select:hover {
+  background: #51473f;
+}
+
 .procedure-page a:focus-visible,
 .procedure-page button:focus-visible {
-  outline: 2px solid #927b67;
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
+
+/* Responsividade */
 
 @media (max-width: 900px) {
   .procedure-grid {
@@ -198,9 +348,8 @@
 }
 
 @media (max-width: 620px) {
-  .procedure-main {
-    padding-top: 36px;
-    padding-bottom: 55px;
+  .procedure-header-inner {
+    min-height: 70px;
   }
 
   .procedure-brand {
@@ -211,8 +360,18 @@
     height: 52px;
   }
 
+  .procedure-main {
+    padding-top: 36px;
+    padding-bottom: 55px;
+  }
+
   .procedure-grid {
     grid-template-columns: 1fr;
+  }
+
+  .procedure-card > img,
+  .procedure-placeholder {
+    height: 195px;
   }
 
   .procedure-footer {
@@ -225,8 +384,30 @@
     white-space: normal;
   }
 
-  .procedure-card > img,
-  .procedure-placeholder {
-    height: 195px;
+  .procedure-overlay {
+    padding: 12px;
+  }
+
+  .procedure-modal-header,
+  .procedure-modal-content,
+  .procedure-modal-footer {
+    padding: 20px;
+  }
+
+  .procedure-modal-image {
+    padding: 12px;
+  }
+
+  .procedure-modal-image img {
+    max-height: 350px;
+  }
+
+  .procedure-modal-footer {
+    flex-direction: column;
+  }
+
+  .procedure-modal-back,
+  .procedure-modal-select {
+    width: 100%;
   }
 }

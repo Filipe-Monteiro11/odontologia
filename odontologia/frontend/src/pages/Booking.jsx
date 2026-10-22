@@ -1,75 +1,233 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Check, MessageCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  MessageCircle,
+  X,
+} from "lucide-react";
 import "../styles/booking.css";
 
 const PROCEDURES = [
   {
     name: "Extrações",
-    description: "Remoção de dentes quando indicada após avaliação clínica.",
     image: "/images/extracoes.png",
+    description: "Remoção de dentes quando indicada após avaliação clínica.",
+    details:
+      "A extração dentária consiste na remoção de um dente quando sua manutenção não é indicada. Pode ser necessária em casos de danos extensos, alterações de posicionamento ou outras condições. A decisão e os cuidados antes e depois do procedimento dependem de avaliação profissional.",
   },
   {
     name: "Restaurações",
-    description: "Recuperação da estrutura e da função dos dentes.",
     image: "/images/restauracoes.png",
+    description: "Recuperação da estrutura e da função dos dentes.",
+    details:
+      "As restaurações recuperam partes dos dentes afetadas por cáries, fraturas ou desgaste. Materiais como a resina composta podem ser utilizados para reconstruir a região, preservando a estrutura dental e auxiliando na mastigação.",
   },
   {
     name: "Aparelhos metálicos e estéticos",
-    description: "Tratamentos ortodônticos para correção do alinhamento dental e da mordida.",
     image: "/images/aparelho-ortodontico.png",
+    description: "Tratamentos para correção do alinhamento dental e da mordida.",
+    details:
+      "Os aparelhos ortodônticos movimentam gradualmente os dentes para corrigir alterações de alinhamento e mordida. Existem opções metálicas e estéticas. A escolha depende das necessidades do paciente e do planejamento profissional.",
   },
   {
     name: "Atendimento de crianças",
+    image: "/images/atendimento-de-criancas.png",
     description: "Cuidados odontológicos voltados à saúde bucal infantil.",
+    details:
+      "O atendimento infantil acompanha o desenvolvimento dos dentes e ajuda a prevenir problemas bucais. Inclui avaliações, orientações de higiene e cuidados adaptados à idade e às necessidades de cada criança.",
   },
   {
     name: "Tratamento de canal",
-    description: "Tratamento da parte interna do dente, conforme avaliação clínica.",
     image: "/images/tratamento-de-canal.png",
+    description: "Tratamento da parte interna do dente.",
+    details:
+      "O tratamento de canal é indicado quando a polpa, tecido localizado no interior do dente, apresenta inflamação ou infecção. O procedimento trata e preenche os canais internos, buscando preservar o dente quando possível.",
   },
   {
     name: "Próteses dentárias",
-    description: "Soluções para substituir dentes ausentes e recuperar a mastigação.",
     image: "/images/proteses.png",
+    description: "Alternativas para substituir dentes ausentes e recuperar a mastigação.",
+    details:
+      "As próteses substituem dentes ausentes e ajudam a recuperar funções como mastigação e fala. Existem opções parciais, totais, fixas e removíveis. A escolha considera a saúde bucal e as necessidades individuais.",
   },
   {
     name: "Clareamento dental",
-    description: "Tratamento estético para clarear os dentes com acompanhamento profissional.",
     image: "/images/clareamento-dental.png",
+    description: "Tratamento estético para clarear os dentes.",
+    details:
+      "O clareamento dental utiliza técnicas específicas para reduzir determinadas pigmentações e tornar os dentes mais claros. A técnica e os resultados possíveis dependem das características de cada paciente e de avaliação profissional.",
   },
   {
     name: "Cirurgias odontológicas",
-    description: "Procedimentos cirúrgicos realizados conforme indicação clínica.",
     image: "/images/cirurgias-odontologicas.png",
+    description: "Procedimentos cirúrgicos realizados conforme indicação clínica.",
+    details:
+      "As cirurgias odontológicas abrangem diferentes intervenções nos dentes e tecidos da boca. A necessidade, a técnica utilizada e os cuidados posteriores são definidos de acordo com cada situação clínica.",
   },
   {
     name: "Facetas dentárias",
-    description: "Tratamentos estéticos para modificar a aparência dos dentes.",
     image: "/images/facetas-dentarias.png",
+    description: "Tratamentos estéticos para modificar a aparência dos dentes.",
+    details:
+      "As facetas são revestimentos aplicados à superfície dos dentes para modificar aspectos como formato e aparência. Podem ser confeccionadas em diferentes materiais, conforme a avaliação e o planejamento estético.",
   },
   {
     name: "Harmonização facial (Botox)",
-    description: "Procedimentos estéticos realizados após avaliação individual.",
     image: "/images/harmonizacao-facial-botox.png",
+    description: "Procedimentos estéticos realizados após avaliação individual.",
+    details:
+      "A toxina botulínica pode ser utilizada para suavizar determinadas linhas de expressão por meio da redução temporária da atividade muscular. A indicação, os pontos de aplicação e os cuidados necessários dependem de avaliação profissional.",
   },
   {
     name: "Limpeza dental",
-    description: "Remoção profissional de placa e tártaro para manutenção da saúde bucal.",
     image: "/images/limpeza-dental.png",
+    description: "Remoção profissional de placa e tártaro para cuidar da saúde bucal.",
+    details:
+      "A limpeza profissional auxilia na remoção de placa bacteriana e tártaro. Conforme a avaliação, pode envolver raspagem e polimento, além de orientações para manter uma boa higiene bucal.",
   },
 ];
 
 const WHATSAPP_NUMBER = "5581996592005";
 
+function getWhatsAppUrl(procedure) {
+  const message = `Olá! Gostaria de saber mais sobre ${procedure} e conversar sobre um possível agendamento com a Dra. Alícia Korinfsky.`;
+
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
+function ProcedureDetails({ procedure, onClose, onSelect }) {
+  const modalRef = useRef(null);
+  const closeRef = useRef(null);
+
+  useEffect(() => {
+    const previousFocus = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = "hidden";
+    closeRef.current?.focus();
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const elements = modalRef.current?.querySelectorAll(
+        "button:not(:disabled), a[href]"
+      );
+
+      if (!elements?.length) return;
+
+      const first = elements[0];
+      const last = elements[elements.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleKeyDown);
+      previousFocus?.focus?.();
+    };
+  }, [onClose]);
+
+  return (
+    <div
+      className="procedure-overlay"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <section
+        ref={modalRef}
+        className="procedure-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="procedure-modal-title"
+        aria-describedby="procedure-modal-description"
+      >
+        <header className="procedure-modal-header">
+          <div>
+            <span>CONHEÇA O PROCEDIMENTO</span>
+            <h2 id="procedure-modal-title">{procedure.name}</h2>
+          </div>
+
+          <button
+            ref={closeRef}
+            type="button"
+            className="procedure-modal-close"
+            onClick={onClose}
+            aria-label="Fechar informações"
+          >
+            <X size={21} />
+          </button>
+        </header>
+
+        {procedure.image && (
+          <div className="procedure-modal-image">
+            <img
+              src={procedure.image}
+              alt={`Imagem ilustrativa de ${procedure.name}`}
+            />
+          </div>
+        )}
+
+        <div className="procedure-modal-content">
+          <h3>Sobre o tratamento</h3>
+          <p id="procedure-modal-description">{procedure.details}</p>
+          <small>
+            A indicação e o planejamento dependem de avaliação
+            odontológica individualizada.
+          </small>
+        </div>
+
+        <footer className="procedure-modal-footer">
+          <button
+            type="button"
+            className="procedure-modal-back"
+            onClick={onClose}
+          >
+            Voltar aos procedimentos
+          </button>
+
+          <button
+            type="button"
+            className="procedure-modal-select"
+            onClick={() => onSelect(procedure)}
+          >
+            <Check size={17} />
+            Escolher tratamento
+          </button>
+        </footer>
+      </section>
+    </div>
+  );
+}
+
 export default function Booking() {
   const [selected, setSelected] = useState(null);
+  const [opened, setOpened] = useState(null);
 
-  const whatsappUrl = selected
-    ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-        `Olá! Gostaria de saber mais sobre o procedimento de ${selected.name} e conversar sobre um possível agendamento com a Dra. Alícia Korinfsky.`
-      )}`
-    : null;
+  function closeModal() {
+    setOpened(null);
+  }
+
+  function selectProcedure(procedure) {
+    setSelected(procedure);
+    closeModal();
+  }
 
   return (
     <div className="procedure-page">
@@ -81,7 +239,7 @@ export default function Booking() {
             aria-label="Voltar à página inicial"
           >
             <img
-              src="/images/logo-alicia.png"
+              src="/images/logo-odonto.png"
               alt="Alícia Korinfsky"
             />
           </Link>
@@ -101,8 +259,8 @@ export default function Booking() {
 
           <p>
             Conheça os procedimentos oferecidos pela Dra. Alícia Korinfsky.
-            Selecione o tratamento de seu interesse e converse com nossa
-            equipe para obter informações e combinar seu atendimento.
+            Clique em um tratamento para saber mais e converse com nossa
+            equipe pelo WhatsApp.
           </p>
         </div>
 
@@ -115,13 +273,13 @@ export default function Booking() {
                 key={procedure.name}
                 type="button"
                 className={`procedure-card${isSelected ? " is-selected" : ""}`}
-                onClick={() => setSelected(procedure)}
-                aria-pressed={isSelected}
+                onClick={() => setOpened(procedure)}
+                aria-label={`Saiba mais sobre ${procedure.name}`}
               >
                 {procedure.image ? (
                   <img
                     src={procedure.image}
-                    alt={procedure.name}
+                    alt=""
                     loading="lazy"
                   />
                 ) : (
@@ -142,7 +300,7 @@ export default function Booking() {
                   </span>
 
                   <span className="procedure-select">
-                    {isSelected ? "Selecionado" : "Selecionar tratamento"}
+                    {isSelected ? "Selecionado · Ver detalhes" : "Saiba mais"}
                     <ArrowRight size={15} />
                   </span>
                 </span>
@@ -157,18 +315,16 @@ export default function Booking() {
               TRATAMENTO ESCOLHIDO
             </span>
 
-            <h2>
-              {selected?.name || "Selecione um procedimento acima"}
-            </h2>
+            <h2>{selected?.name || "Selecione um procedimento"}</h2>
 
             <p>
               A data e o horário serão combinados diretamente com nossa equipe.
             </p>
           </div>
 
-          {whatsappUrl ? (
+          {selected ? (
             <a
-              href={whatsappUrl}
+              href={getWhatsAppUrl(selected.name)}
               target="_blank"
               rel="noopener noreferrer"
               className="procedure-cta"
@@ -185,6 +341,14 @@ export default function Booking() {
           )}
         </section>
       </main>
+
+      {opened && (
+        <ProcedureDetails
+          procedure={opened}
+          onClose={closeModal}
+          onSelect={selectProcedure}
+        />
+      )}
     </div>
   );
 }
