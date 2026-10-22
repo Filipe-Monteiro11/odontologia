@@ -15,7 +15,9 @@
   text-decoration: none;
 }
 
-.home-page a:focus-visible {
+.home-page a:focus-visible,
+.home-photo:focus-visible,
+.home-photo-close:focus-visible {
   outline: 2px solid var(--home-accent);
   outline-offset: 3px;
 }
@@ -33,21 +35,22 @@
   justify-content: space-between;
   gap: 32px;
   width: 100%;
-  max-width: 1400px;
-  min-height: 88px;
+  min-height: 115px;
   padding-inline: 24px;
 }
 
 .home-brand {
+  display: flex;
+  align-items: center;
   flex-shrink: 0;
-  width: 190px;
-  background: #000;
+  width: 260px;
+  background: transparent;
 }
 
 .home-brand img {
   display: block;
   width: 100%;
-  height: 60px;
+  height: 78px;
   object-fit: contain;
 }
 
@@ -88,7 +91,7 @@
 }
 
 .home-button-dark {
-  background: #807872;
+  background: #9e9187;
   color: #fff;
 }
 
@@ -126,8 +129,7 @@
   grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.7fr);
   align-items: center;
   gap: 65px;
-  padding-top: 90px;
-  padding-bottom: 90px;
+  padding-block: 90px;
 }
 
 .home-hero-text h1 {
@@ -168,8 +170,6 @@
   flex-shrink: 0;
   color: var(--home-accent);
 }
-
-/* Informações do consultório */
 
 .home-hero-panel {
   padding: 35px;
@@ -234,16 +234,13 @@
   margin-bottom: 35px;
 }
 
-.home-section-heading h2,
-.home-about-heading h2 {
+.home-section-heading h2 {
   margin: 14px 0;
   font-size: clamp(28px, 3vw, 38px);
   line-height: 1.25;
 }
 
-.home-section-heading p,
-.home-about-heading p,
-.home-about-description p {
+.home-section-heading p {
   margin: 0;
   color: var(--home-muted);
   font-size: 14px;
@@ -252,20 +249,118 @@
 
 /* Sobre a dentista */
 
+.home-about {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      ellipse at 12% 38%,
+      rgba(221, 202, 187, 0.22),
+      transparent 48%
+    ),
+    linear-gradient(135deg, #fff 5%, #faf7f4 100%);
+}
+
 .home-about-heading {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   align-items: center;
-  gap: 70px;
-  margin-bottom: 65px;
+  gap: clamp(60px, 7.5vw, 125px);
+  margin-bottom: 110px;
 }
 
-.home-about-heading h2 {
-  max-width: 480px;
+.home-about-photo {
+  position: relative;
+  isolation: isolate;
+  width: min(100%, 450px);
+  margin: 26px 0 28px 32px;
+  border-radius: 8px 8px 100px 8px;
+  background: #eee5dd;
 }
 
-.home-about-description p + p {
-  margin-top: 15px;
+.home-about-photo::before {
+  content: "";
+  position: absolute;
+  inset: -22px 26px 24px -32px;
+  z-index: -1;
+  border: 1px solid #cbb6a5;
+  border-radius: 8px 8px 100px 8px;
+}
+
+.home-about-photo::after {
+  content: "";
+  position: absolute;
+  right: -24px;
+  bottom: -24px;
+  z-index: -1;
+  width: 55%;
+  height: 55%;
+  border-radius: 0 0 100px 0;
+  background: #e6d8cc;
+}
+
+.home-about-photo img {
+  display: block;
+  width: 100%;
+  height: 505px;
+  border-radius: inherit;
+  object-fit: cover;
+  object-position: 68% center;
+}
+
+.home-about-info {
+  max-width: 640px;
+  padding-block: 28px;
+}
+
+.home-about-info .home-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  color: #927763;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.4px;
+}
+
+.home-about-info .home-eyebrow::before {
+  content: "";
+  width: 32px;
+  height: 1px;
+  background: #b99f8c;
+}
+
+.home-about-info h2 {
+  max-width: 620px;
+  margin: 25px 0 27px;
+  color: #302c29;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(42px, 4.2vw, 62px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -1.8px;
+  text-wrap: balance;
+}
+
+.home-about-info h2::after {
+  content: "";
+  display: block;
+  width: 76px;
+  height: 2px;
+  margin-top: 30px;
+  background: #b99f8c;
+}
+
+.home-about-info p {
+  max-width: 550px;
+  margin: 0;
+  color: #6b625c;
+  font-size: 15px;
+  line-height: 2;
+}
+
+.home-about-info p + p {
+  margin-top: 20px;
 }
 
 /* Galeria */
@@ -302,12 +397,16 @@
 }
 
 .home-photo {
+  display: block;
   min-width: 0;
   min-height: 0;
   margin: 0;
+  padding: 0;
   overflow: hidden;
+  border: 0;
   border-radius: 10px;
   background: #f5f1ed;
+  cursor: zoom-in;
 }
 
 .home-photo img {
@@ -338,6 +437,51 @@
   display: flex;
   justify-content: center;
   margin-top: 28px;
+}
+
+/* Fotografias ampliadas */
+
+.home-photo-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(20, 18, 17, 0.88);
+}
+
+.home-photo-modal {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(100%, 960px);
+  max-height: 92dvh;
+}
+
+.home-photo-modal > img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 86dvh;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+.home-photo-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--home-text);
+  cursor: pointer;
 }
 
 /* Catálogo */
@@ -494,6 +638,10 @@
   .home-hero-grid {
     gap: 35px;
   }
+
+  .home-about-heading {
+    gap: 55px;
+  }
 }
 
 @media (max-width: 800px) {
@@ -503,13 +651,32 @@
   }
 
   .home-hero-grid {
-    padding-top: 60px;
-    padding-bottom: 60px;
+    padding-block: 60px;
   }
 
   .home-about-heading {
-    gap: 20px;
-    margin-bottom: 45px;
+    justify-items: center;
+    gap: 48px;
+    margin-bottom: 65px;
+  }
+
+  .home-about-photo {
+    width: min(calc(100% - 55px), 420px);
+    margin: 22px 0 24px 32px;
+  }
+
+  .home-about-photo img {
+    height: 470px;
+  }
+
+  .home-about-info {
+    width: 100%;
+    max-width: 620px;
+    padding: 0;
+  }
+
+  .home-about-info h2 {
+    font-size: clamp(40px, 6vw, 52px);
   }
 
   .home-photo-grid {
@@ -536,17 +703,17 @@
 
 @media (max-width: 620px) {
   .home-header-inner {
-    min-height: 70px;
+    min-height: 82px;
     gap: 16px;
     padding-inline: 16px;
   }
 
   .home-brand {
-    width: 150px;
+    width: 210px;
   }
 
   .home-brand img {
-    height: 50px;
+    height: 64px;
   }
 
   .home-nav {
@@ -561,8 +728,7 @@
   }
 
   .home-hero-grid {
-    padding-top: 45px;
-    padding-bottom: 55px;
+    padding-block: 45px 55px;
   }
 
   .home-hero-text h1 {
@@ -578,7 +744,57 @@
   }
 
   .home-section {
-    padding: 60px 0;
+    padding-block: 60px;
+  }
+
+  .home-about-heading {
+    gap: 40px;
+    margin-bottom: 60px;
+  }
+
+  .home-about-photo {
+    width: calc(100% - 42px);
+    margin: 16px 0 18px 22px;
+    border-radius: 6px 6px 75px 6px;
+  }
+
+  .home-about-photo::before {
+    inset: -15px 16px 16px -22px;
+    border-radius: 6px 6px 75px 6px;
+  }
+
+  .home-about-photo::after {
+    right: -15px;
+    bottom: -15px;
+    border-radius: 0 0 75px 0;
+  }
+
+  .home-about-photo img {
+    height: 390px;
+  }
+
+  .home-about-info .home-eyebrow {
+    font-size: 10px;
+    letter-spacing: 1.6px;
+  }
+
+  .home-about-info h2 {
+    margin: 20px 0 22px;
+    font-size: clamp(36px, 9vw, 44px);
+    letter-spacing: -1px;
+  }
+
+  .home-about-info h2::after {
+    margin-top: 22px;
+  }
+
+  .home-about-info p {
+    font-size: 14px;
+    line-height: 1.9;
+  }
+
+  .home-about-info p + p {
+    margin-top: 16px;
   }
 
   .home-work-heading {
@@ -588,8 +804,42 @@
   }
 
   .home-photo-grid {
-    grid-auto-rows: 165px;
-    gap: 9px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: auto;
+    grid-auto-flow: dense;
+    gap: 10px;
+  }
+
+  .home-photo {
+    height: 170px;
+  }
+
+  .home-photo-1 {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    height: auto;
+    aspect-ratio: 9 / 15;
+  }
+
+  .home-photo-5,
+  .home-photo-7 {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    height: 260px;
+  }
+
+  .home-photo-5 img,
+  .home-photo-7 img {
+    object-fit: contain;
+  }
+
+  .home-photo-overlay {
+    padding: 12px;
+  }
+
+  .home-photo-close {
+    top: 8px;
+    right: 8px;
   }
 
   .home-gallery-action .home-button {

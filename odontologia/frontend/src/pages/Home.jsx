@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowRight,
@@ -6,6 +7,7 @@ import {
   MapPin,
   MessageCircle,
   Phone,
+  X,
 } from "lucide-react";
 import "../styles/home.css";
 
@@ -35,11 +37,46 @@ const PHOTOS = Array.from({ length: 7 }, (_, index) => ({
 
 export default function Home() {
   const navigate = useNavigate();
+  const [openPhoto, setOpenPhoto] = useState(null);
+  const closeRef = useRef(null);
+  const triggerRef = useRef(null);
+
+  useEffect(() => {
+    if (!openPhoto) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeRef.current?.focus();
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        setOpenPhoto(null);
+      }
+
+      if (event.key === "Tab") {
+        event.preventDefault();
+        closeRef.current?.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleKeyDown);
+      triggerRef.current?.focus();
+    };
+  }, [openPhoto]);
+
+  function showPhoto(photo, event) {
+    triggerRef.current = event.currentTarget;
+    setOpenPhoto(photo);
+  }
 
   return (
     <div className="home-page">
       <header className="home-header">
-        <div className="container home-header-inner">
+        <div className="home-header-inner">
           <div
             className="home-brand"
             onDoubleClick={() => navigate("/admin/login")}
@@ -70,9 +107,9 @@ export default function Home() {
               <h1>Atenção e cuidado para o seu sorriso.</h1>
 
               <p>
-                Conheça os tratamentos oferecidos pela Dra. Alícia
-                Korinfsky, com atendimento individualizado e atenção
-                às necessidades de cada paciente.
+                Com atuação em mais de sete áreas da odontologia e procedimentos de estética facial, incluindo a aplicação de toxina botulínica (Botox), a clínica oferece um atendimento completo, aliando técnicas avançadas a um cuidado individualizado.
+
+                À frente de uma equipe multidisciplinar, a Dra. Alícia Korinfsky busca proporcionar resultados que valorizam não apenas a beleza do sorriso, mas também a saúde, a autoestima e o bem-estar de cada paciente.
               </p>
 
               <div className="home-actions">
@@ -135,18 +172,21 @@ export default function Home() {
         <section id="sobre" className="home-section home-about">
           <div className="container">
             <div className="home-about-heading">
-              <div>
+              <div className="home-about-photo">
+                <img
+                  src="/images/dra-alicia.png"
+                  alt="Dra. Alícia Korinfsky"
+                  loading="lazy"
+                />
+              </div>
+
+              <div className="home-about-info">
                 <span className="home-eyebrow">
                   CONHEÇA A PROFISSIONAL
                 </span>
-                <h2>Sobre a Dra. Alícia Korinfsky</h2>
-                <p>
-                  Um olhar sobre nosso trabalho e os cuidados
-                  dedicados a cada sorriso.
-                </p>
-              </div>
 
-              <div className="home-about-description">
+                <h2>Sobre a Dra. Alícia Korinfsky</h2>
+
                 <p>
                   A Dra. Alícia Korinfsky oferece atendimento
                   odontológico em Camaragibe, com cuidados voltados
@@ -178,16 +218,19 @@ export default function Home() {
 
             <div className="home-photo-grid">
               {PHOTOS.map((photo, index) => (
-                <figure
+                <button
                   key={photo.src}
+                  type="button"
                   className={`home-photo home-photo-${index + 1}`}
+                  onClick={(event) => showPhoto(photo, event)}
+                  aria-label={`Ampliar fotografia ${index + 1}`}
                 >
                   <img
                     src={photo.src}
                     alt={photo.alt}
                     loading="lazy"
                   />
-                </figure>
+                </button>
               ))}
             </div>
 
@@ -210,6 +253,7 @@ export default function Home() {
             <div className="home-section-heading">
               <span className="home-eyebrow">NOSSOS TRATAMENTOS</span>
               <h2>Cuidados para a sua saúde bucal</h2>
+
               <p>
                 Confira os procedimentos apresentados no consultório.
                 A indicação depende de avaliação odontológica individual.
@@ -234,6 +278,7 @@ export default function Home() {
             <div className="home-section-heading">
               <span className="home-eyebrow">CONTATO</span>
               <h2>Estamos à sua disposição</h2>
+
               <p>
                 Entre em contato com a equipe ou conheça
                 a localização do consultório.
@@ -245,6 +290,7 @@ export default function Home() {
                 <Phone size={23} />
                 <h3>WhatsApp</h3>
                 <p>(81) 99659-2005</p>
+
                 <a
                   href={WHATSAPP}
                   target="_blank"
@@ -259,6 +305,7 @@ export default function Home() {
                 <Camera size={23} />
                 <h3>Instagram</h3>
                 <p>@dentista.aliciakorinfsky</p>
+
                 <a
                   href={INSTAGRAM}
                   target="_blank"
@@ -272,11 +319,13 @@ export default function Home() {
               <div className="home-contact-card">
                 <MapPin size={23} />
                 <h3>Endereço</h3>
+
                 <p>
                   Rua Vila Nova, 622, Loja 29
                   <br />
                   Centro, Camaragibe - PE
                 </p>
+
                 <a
                   href={MAPS}
                   target="_blank"
@@ -312,6 +361,36 @@ export default function Home() {
           <span>© {new Date().getFullYear()} · Camaragibe, PE</span>
         </div>
       </footer>
+
+      {openPhoto && (
+        <div
+          className="home-photo-overlay"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setOpenPhoto(null);
+            }
+          }}
+        >
+          <div
+            className="home-photo-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Fotografia ampliada"
+          >
+            <button
+              ref={closeRef}
+              type="button"
+              className="home-photo-close"
+              onClick={() => setOpenPhoto(null)}
+              aria-label="Fechar fotografia"
+            >
+              <X size={22} />
+            </button>
+
+            <img src={openPhoto.src} alt={openPhoto.alt} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
