@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   ArrowRight,
   Camera,
@@ -36,7 +36,6 @@ const PHOTOS = Array.from({ length: 7 }, (_, index) => ({
 }));
 
 export default function Home() {
-  const navigate = useNavigate();
   const [openPhoto, setOpenPhoto] = useState(null);
   const closeRef = useRef(null);
   const triggerRef = useRef(null);
@@ -77,10 +76,7 @@ export default function Home() {
     <div className="home-page">
       <header className="home-header">
         <div className="home-header-inner">
-          <div
-            className="home-brand"
-            onDoubleClick={() => navigate("/admin/login")}
-          >
+          <div className="home-brand">
             <img
               src="/images/logo-odonto.png"
               alt="Dra. Alícia Korinfsky"
@@ -107,13 +103,16 @@ export default function Home() {
               <h1>Atenção e cuidado para o seu sorriso.</h1>
 
               <p>
-                Com atuação em mais de sete áreas da odontologia e procedimentos de estética facial, incluindo a aplicação de toxina botulínica (Botox), a clínica oferece um atendimento completo, aliando técnicas avançadas a um cuidado individualizado.
-
-                À frente de uma equipe multidisciplinar, a Dra. Alícia Korinfsky busca proporcionar resultados que valorizam não apenas a beleza do sorriso, mas também a saúde, a autoestima e o bem-estar de cada paciente.
+                Conheça os tratamentos oferecidos pela Dra. Alícia
+                Korinfsky, com atendimento individualizado e atenção
+                às necessidades de cada paciente.
               </p>
 
               <div className="home-actions">
-                <Link to="/agendar" className="home-button home-button-dark">
+                <Link
+                  to="/agendar"
+                  className="home-button home-button-dark"
+                >
                   Conhecer procedimentos
                   <ArrowRight size={17} />
                 </Link>
@@ -146,6 +145,7 @@ export default function Home() {
 
               <div className="home-hero-info">
                 <Clock3 size={20} />
+
                 <div>
                   <strong>Horário de funcionamento</strong>
                   <span>Segunda a sexta: 09h às 17h</span>
@@ -155,6 +155,7 @@ export default function Home() {
 
               <div className="home-hero-info">
                 <Phone size={20} />
+
                 <div>
                   <strong>Telefone / WhatsApp</strong>
                   <span>(81) 99659-2005</span>
@@ -188,15 +189,16 @@ export default function Home() {
                 <h2>Sobre a Dra. Alícia Korinfsky</h2>
 
                 <p>
-                  A Dra. Alícia Korinfsky oferece atendimento
-                  odontológico em Camaragibe, com cuidados voltados
-                  à saúde bucal e à estética do sorriso.
+                  A clínica atua em mais de sete áreas da odontologia
+                  e oferece procedimentos de estética facial, incluindo
+                  a aplicação de toxina botulínica (Botox).
                 </p>
 
                 <p>
-                  Entre os procedimentos disponíveis estão
-                  restaurações, limpeza dental, próteses, ortodontia
-                  e tratamentos estéticos, conforme avaliação individual.
+                  Com uma equipe multidisciplinar, a Dra. Alícia
+                  Korinfsky oferece atendimento individualizado,
+                  com foco na saúde, na estética e no bem-estar
+                  de cada paciente.
                 </p>
               </div>
             </div>
@@ -206,13 +208,13 @@ export default function Home() {
                 <span className="home-eyebrow">
                   REGISTROS FOTOGRÁFICOS
                 </span>
+
                 <h3>Nosso trabalho</h3>
               </div>
 
               <p>
-                Alguns registros fotográficos compartilhados tiradas no
-                consultório, mostrando resultados de tratamentos realizados
-                com atenção e cuidado.
+                Conheça alguns registros fotográficos de
+                tratamentos realizados no consultório.
               </p>
             </div>
 
@@ -240,7 +242,10 @@ export default function Home() {
             </p>
 
             <div className="home-gallery-action">
-              <Link to="/agendar" className="home-button home-button-outline">
+              <Link
+                to="/agendar"
+                className="home-button home-button-outline"
+              >
                 Conhecer nossos procedimentos
                 <ArrowRight size={17} />
               </Link>
@@ -248,10 +253,16 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="tratamentos" className="home-section home-services">
+        <section
+          id="tratamentos"
+          className="home-section home-services"
+        >
           <div className="container">
             <div className="home-section-heading">
-              <span className="home-eyebrow">NOSSOS TRATAMENTOS</span>
+              <span className="home-eyebrow">
+                NOSSOS TRATAMENTOS
+              </span>
+
               <h2>Cuidados para a sua saúde bucal</h2>
 
               <p>
@@ -266,6 +277,7 @@ export default function Home() {
                   <span className="home-service-number">
                     {String(index + 1).padStart(2, "0")}
                   </span>
+
                   <span>{service}</span>
                 </div>
               ))}
@@ -277,6 +289,7 @@ export default function Home() {
           <div className="container">
             <div className="home-section-heading">
               <span className="home-eyebrow">CONTATO</span>
+
               <h2>Estamos à sua disposição</h2>
 
               <p>
@@ -288,6 +301,7 @@ export default function Home() {
             <div className="home-contact-grid">
               <div className="home-contact-card">
                 <Phone size={23} />
+
                 <h3>WhatsApp</h3>
                 <p>(81) 99659-2005</p>
 
@@ -303,6 +317,7 @@ export default function Home() {
 
               <div className="home-contact-card">
                 <Camera size={23} />
+
                 <h3>Instagram</h3>
                 <p>@dentista.aliciakorinfsky</p>
 
@@ -318,6 +333,7 @@ export default function Home() {
 
               <div className="home-contact-card">
                 <MapPin size={23} />
+
                 <h3>Endereço</h3>
 
                 <p>
@@ -358,7 +374,9 @@ export default function Home() {
       <footer className="home-footer">
         <div className="container home-footer-inner">
           <strong>Dra. Alícia Korinfsky</strong>
-          <span>© {new Date().getFullYear()} · Camaragibe, PE</span>
+          <span>
+            © {new Date().getFullYear()} · Camaragibe, PE
+          </span>
         </div>
       </footer>
 
