@@ -1,11 +1,13 @@
 .home-page {
-  --home-accent: #927b67;
+  --home-accent: #a58f7e;
   --home-border: #e5e1dc;
   --home-muted: #6e6b68;
+  --home-text: #3a3939;
+  --home-surface: #f7f6f4;
 
   min-height: 100vh;
   background: #fff;
-  color: #303030;
+  color: var(--home-text);
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -36,6 +38,7 @@
 .home-brand {
   flex-shrink: 0;
   width: 190px;
+  background: #000;
 }
 
 .home-brand img {
@@ -71,7 +74,7 @@
   gap: 10px;
   min-height: 47px;
   padding: 12px 18px;
-  border: 1px solid #303030;
+  border: 1px solid var(--home-text);
   border-radius: 4px;
   font-size: 13px;
   font-weight: 700;
@@ -79,7 +82,7 @@
 }
 
 .home-button-dark {
-  background: #303030;
+  background: #807872;
   color: #fff;
 }
 
@@ -90,7 +93,7 @@
 
 .home-button-outline {
   background: transparent;
-  color: #303030;
+  color: var(--home-text);
 }
 
 .home-button-outline:hover {
@@ -109,7 +112,7 @@
 
 .home-hero,
 .home-services {
-  background: #f7f6f4;
+  background: var(--home-surface);
 }
 
 .home-hero-grid {
@@ -155,11 +158,12 @@
 
 .home-location svg,
 .home-hero-info > svg,
-.home-contact-card > svg,
-.home-hours svg {
+.home-contact-card > svg {
   flex-shrink: 0;
   color: var(--home-accent);
 }
+
+/* Informações do consultório */
 
 .home-hero-panel {
   padding: 35px;
@@ -208,7 +212,7 @@
   align-items: center;
   gap: 10px;
   margin-top: 30px;
-  color: #303030;
+  color: var(--home-text);
   font-size: 13px;
   font-weight: 700;
 }
@@ -330,7 +334,7 @@
   margin-top: 28px;
 }
 
-/* Catálogo de tratamentos */
+/* Catálogo */
 
 .home-services-grid {
   display: grid;
@@ -370,7 +374,7 @@
   min-width: 0;
   padding: 28px;
   border: 1px solid var(--home-border);
-  border-radius: 5px;
+  border-radius: 6px;
   background: #fff;
 }
 
@@ -398,33 +402,51 @@
   font-weight: 700;
 }
 
+/* Horário de funcionamento */
+
 .home-hours {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.9fr);
   align-items: center;
-  justify-content: space-between;
-  gap: 25px;
-  margin-top: 20px;
-  padding: 25px 28px;
-  border: 1px solid var(--home-border);
-  border-radius: 5px;
-  background: #f7f6f4;
+  gap: 36px;
+  margin-top: 24px;
+  padding: 32px 36px;
+  border: 1px solid #e7dfd7;
+  border-left: 4px solid var(--home-accent);
+  border-radius: 10px;
+  background: #f6f2ee;
 }
 
 .home-hours > div {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
+}
+
+.home-hours svg {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #eae1d9;
+  color: #8e7562;
 }
 
 .home-hours strong {
-  font-size: 14px;
+  color: var(--home-text);
+  font-size: 18px;
+  line-height: 1.4;
 }
 
 .home-hours p {
   margin: 0;
-  color: var(--home-muted);
-  font-size: 13px;
-  line-height: 1.8;
+  padding: 4px 0 4px 24px;
+  border-left: 1px solid #ded3c9;
+  color: #645b54;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 2.2;
 }
 
 /* Rodapé */
@@ -500,6 +522,11 @@
   .home-services-grid,
   .home-contact-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-hours {
+    gap: 24px;
+    padding: 28px;
   }
 }
 
@@ -580,10 +607,33 @@
     min-height: 0;
   }
 
-  .home-hours,
+  .home-hours {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 24px;
+  }
+
+  .home-hours svg {
+    width: 44px;
+    height: 44px;
+    padding: 11px;
+  }
+
+  .home-hours strong {
+    font-size: 16px;
+  }
+
+  .home-hours p {
+    padding: 14px 0 0;
+    border-left: 0;
+    border-top: 1px solid #ded3c9;
+    font-size: 13px;
+    line-height: 2.1;
+  }
+
   .home-footer-inner {
-    align-items: flex-start;
     flex-direction: column;
+    align-items: flex-start;
     justify-content: center;
     gap: 12px;
   }
