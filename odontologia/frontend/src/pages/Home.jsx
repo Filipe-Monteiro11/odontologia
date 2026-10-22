@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   Camera,
@@ -34,12 +34,21 @@ const PHOTOS = Array.from({ length: 7 }, (_, index) => ({
 }));
 
 export default function Home() {
+  const navigate = useNavigate();
+
   return (
     <div className="home-page">
       <header className="home-header">
         <div className="container home-header-inner">
-          <div className="home-brand">
-            <img src="/images/logo-odonto.png" alt="Dra. Alícia Korinfsky" />
+          <div
+            className="home-brand"
+            onDoubleClick={() => navigate("/admin/login")}
+          >
+            <img
+              src="/images/logo-odonto.png"
+              alt="Dra. Alícia Korinfsky"
+              draggable="false"
+            />
           </div>
 
           <nav className="home-nav" aria-label="Menu principal">
@@ -47,11 +56,6 @@ export default function Home() {
             <a href="#tratamentos">Tratamentos</a>
             <a href="#contato">Contato</a>
           </nav>
-
-          <Link to="/agendar" className="home-button home-button-dark">
-            Conhecer procedimentos
-            <ArrowRight size={17} />
-          </Link>
         </div>
       </header>
 
@@ -132,7 +136,9 @@ export default function Home() {
           <div className="container">
             <div className="home-about-heading">
               <div>
-                <span className="home-eyebrow">CONHEÇA A PROFISSIONAL</span>
+                <span className="home-eyebrow">
+                  CONHEÇA A PROFISSIONAL
+                </span>
                 <h2>Sobre a Dra. Alícia Korinfsky</h2>
                 <p>
                   Um olhar sobre nosso trabalho e os cuidados
@@ -157,7 +163,9 @@ export default function Home() {
 
             <div className="home-work-heading">
               <div>
-                <span className="home-eyebrow">REGISTROS FOTOGRÁFICOS</span>
+                <span className="home-eyebrow">
+                  REGISTROS FOTOGRÁFICOS
+                </span>
                 <h3>Nosso trabalho</h3>
               </div>
 
@@ -174,7 +182,11 @@ export default function Home() {
                   key={photo.src}
                   className={`home-photo home-photo-${index + 1}`}
                 >
-                  <img src={photo.src} alt={photo.alt} loading="lazy" />
+                  <img
+                    src={photo.src}
+                    alt={photo.alt}
+                    loading="lazy"
+                  />
                 </figure>
               ))}
             </div>

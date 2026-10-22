@@ -31,8 +31,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 32px;
+  width: 100%;
+  max-width: 1400px;
   min-height: 88px;
+  padding-inline: 24px;
 }
 
 .home-brand {
@@ -51,13 +54,16 @@
 .home-nav {
   display: flex;
   align-items: center;
-  gap: 25px;
+  justify-content: flex-end;
+  gap: 38px;
+  margin-left: auto;
 }
 
 .home-nav a {
-  color: #555;
-  font-size: 13px;
+  color: var(--home-text);
+  font-size: 15px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .home-nav a:hover,
@@ -477,14 +483,12 @@
 @media (max-width: 1000px) {
   .home-header-inner {
     flex-wrap: wrap;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    gap: 16px;
+    padding-block: 15px;
   }
 
   .home-nav {
-    order: 3;
-    justify-content: center;
-    width: 100%;
+    gap: 25px;
   }
 
   .home-hero-grid {
@@ -534,28 +538,26 @@
   .home-header-inner {
     min-height: 70px;
     gap: 16px;
+    padding-inline: 16px;
   }
 
   .home-brand {
-    width: 145px;
+    width: 150px;
   }
 
   .home-brand img {
     height: 50px;
   }
 
-  .home-header-inner > .home-button {
-    padding: 10px 12px;
-    font-size: 11px;
-  }
-
   .home-nav {
+    justify-content: center;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 18px;
+    width: 100%;
   }
 
   .home-nav a {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .home-hero-grid {
