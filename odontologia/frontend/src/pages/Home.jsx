@@ -389,9 +389,7 @@ export default function Home() {
         <div className="container home-footer-inner">
           <strong>Dra. Alícia Korinfsky</strong>
 
-          <span>
-            © {new Date().getFullYear()} · Camaragibe, PE
-          </span>
+          <span>© 2026 · Camaragibe, PE</span>
         </div>
       </footer>
 
