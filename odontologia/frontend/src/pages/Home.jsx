@@ -103,9 +103,7 @@ export default function Home() {
               <h1>Atenção e cuidado para o seu sorriso.</h1>
 
               <p>
-                Conheça os tratamentos oferecidos pela Dra. Alícia
-                Korinfsky, com atendimento individualizado e atenção
-                às necessidades de cada paciente.
+              Com atuação especializada em mais de sete áreas da odontologia e em estética facial com Botox, a clínica da Dra. Alícia Korinfsky reúne uma equipe multidisciplinar e técnicas avançadas para oferecer tratamentos que valorizam sua saúde, beleza e bem-estar.
               </p>
 
               <div className="home-actions">
@@ -135,7 +133,10 @@ export default function Home() {
             </div>
 
             <aside className="home-hero-panel">
-              <span className="home-eyebrow">NOSSO ATENDIMENTO</span>
+              <span className="home-eyebrow">
+                NOSSO ATENDIMENTO
+              </span>
+
               <h2>Seu sorriso merece atenção.</h2>
 
               <p>
@@ -145,7 +146,6 @@ export default function Home() {
 
               <div className="home-hero-info">
                 <Clock3 size={20} />
-
                 <div>
                   <strong>Horário de funcionamento</strong>
                   <span>Segunda a sexta: 09h às 17h</span>
@@ -155,7 +155,6 @@ export default function Home() {
 
               <div className="home-hero-info">
                 <Phone size={20} />
-
                 <div>
                   <strong>Telefone / WhatsApp</strong>
                   <span>(81) 99659-2005</span>
@@ -208,7 +207,6 @@ export default function Home() {
                 <span className="home-eyebrow">
                   REGISTROS FOTOGRÁFICOS
                 </span>
-
                 <h3>Nosso trabalho</h3>
               </div>
 
@@ -277,7 +275,6 @@ export default function Home() {
                   <span className="home-service-number">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-
                   <span>{service}</span>
                 </div>
               ))}
@@ -289,9 +286,7 @@ export default function Home() {
           <div className="container">
             <div className="home-section-heading">
               <span className="home-eyebrow">CONTATO</span>
-
               <h2>Estamos à sua disposição</h2>
-
               <p>
                 Entre em contato com a equipe ou conheça
                 a localização do consultório.
@@ -301,7 +296,6 @@ export default function Home() {
             <div className="home-contact-grid">
               <div className="home-contact-card">
                 <Phone size={23} />
-
                 <h3>WhatsApp</h3>
                 <p>(81) 99659-2005</p>
 
@@ -317,7 +311,6 @@ export default function Home() {
 
               <div className="home-contact-card">
                 <Camera size={23} />
-
                 <h3>Instagram</h3>
                 <p>@dentista.aliciakorinfsky</p>
 
@@ -333,7 +326,6 @@ export default function Home() {
 
               <div className="home-contact-card">
                 <MapPin size={23} />
-
                 <h3>Endereço</h3>
 
                 <p>
