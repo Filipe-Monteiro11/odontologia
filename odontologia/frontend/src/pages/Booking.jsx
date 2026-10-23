@@ -47,7 +47,7 @@ const PROCEDURES = [
   },
   {
   name: "Próteses dentárias",
-  image: "/images/proteses.png",
+  image: "/images-optimized/proteses.webp",
   description:
     "Próteses parciais removíveis, flexíveis e totais para substituir dentes ausentes e recuperar a mastigação.",
   details:
@@ -240,7 +240,7 @@ export default function Booking() {
         <div className="procedure-header-inner">
           <div className="procedure-brand">
             <img
-              src="/images/logo-odonto.png"
+              src="/images-optimized/logo-odonto.webp"
               alt="Alícia Korinfsky"
             />
           </div>

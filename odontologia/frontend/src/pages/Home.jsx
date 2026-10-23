@@ -32,7 +32,7 @@ const SERVICES = [
 ];
 
 const PHOTOS = Array.from({ length: 7 }, (_, index) => ({
-  src: `/images/foto-${index + 1}.png`,
+  src: `/images-optimized/foto-${index + 1}.webp`,
   alt: `Registro fotográfico odontológico ${index + 1}`,
 }));
 
@@ -79,7 +79,7 @@ export default function Home() {
         <div className="home-header-inner">
           <div className="home-brand">
             <img
-              src="/images/logo-odonto.png"
+              src="/images-optimized/logo-odonto.webp"
               alt="Dra. Alícia Korinfsky"
               draggable="false"
             />
@@ -177,7 +177,7 @@ export default function Home() {
             <div className="home-about-heading">
               <div className="home-about-photo">
                 <img
-                  src="/images/dra-alicia.png"
+                  src="/images-optimized/dra-alicia.webp"
                   alt="Dra. Alícia Korinfsky"
                   loading="lazy"
                 />
